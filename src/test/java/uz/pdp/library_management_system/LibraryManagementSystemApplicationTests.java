@@ -1,10 +1,10 @@
-package uz.pdp.library_mamagement_system;
+package uz.pdp.library_management_system;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LibraryMamagementSystemApplicationTests {
+class LibraryManagementSystemApplicationTests {
 
 	@Test
 	void contextLoads() {

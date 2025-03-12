@@ -1,4 +1,4 @@
-package uz.pdp.library_mamagement_system.entity;
+package uz.pdp.library_management_system.entity;
 
 import java.time.LocalDate;
 

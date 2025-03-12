@@ -1,7 +1,7 @@
-package uz.pdp.library_mamagement_system.repository;
+package uz.pdp.library_management_system.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import uz.pdp.library_mamagement_system.entity.AuthUser;
+import uz.pdp.library_management_system.entity.AuthUser;
 
 import java.util.Optional;
 
