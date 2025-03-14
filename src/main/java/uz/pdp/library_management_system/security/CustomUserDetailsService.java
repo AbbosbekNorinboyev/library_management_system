@@ -25,7 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AuthUser authUser = authUserRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomUserNotFoundException("AuthUser not found by username: " + username));
-        System.out.println("authUser = " + authUser);
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + authUser.getRole().name()));
         return new User(authUser.getUsername(), authUser.getPassword(), authorities);
