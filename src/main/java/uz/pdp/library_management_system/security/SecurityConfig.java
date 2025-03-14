@@ -18,7 +18,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import uz.pdp.library_management_system.filter.JWTFilter;
-import uz.pdp.library_management_system.util.JWTUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,13 +39,19 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManager -> {
-                    authorizationManager.requestMatchers(
-                            "/swagger-ui/**",
-                            "/swagger-ui.html",
-                            "/v3/api-docs/**",
-                            "/api/auths/**",
-                            "/webjars/**"
-                    ).permitAll();
+                    authorizationManager
+                            .requestMatchers(
+                                    "/swagger-ui/**",
+                                    "/swagger-ui.html",
+                                    "/v3/api-docs/**",
+                                    "/api/auths/**",
+                                    "/webjars/**")
+                            .permitAll()
+                            .requestMatchers(
+                                    "/api/categories/create",
+                                    "/api/categories/update",
+                                    "/api/categories/delete").hasRole("ADMIN")
+                            .anyRequest().authenticated();
                 })
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .sessionManagement(sessionManagementConfigurer -> {

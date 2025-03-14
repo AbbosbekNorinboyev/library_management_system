@@ -1,20 +1,16 @@
-package uz.pdp.library_management_system.entity;
+package uz.pdp.library_management_system.response;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-@Entity
+
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CategoryResponse {
     private String name;
     private String description;
     private Long createdBy;

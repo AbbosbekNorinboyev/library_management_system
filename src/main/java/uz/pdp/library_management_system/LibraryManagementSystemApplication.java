@@ -12,4 +12,6 @@ public class LibraryManagementSystemApplication {
 
 }
 
-// abbos@gmail.com 2210
+// username -> abbos@gmail.com, password -> 2210
+// username -> hasanboy@gmail.com, password -> 2802
+// username -> user@gmail.com, password -> 1234
