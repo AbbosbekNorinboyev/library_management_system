@@ -7,6 +7,7 @@ import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.exception.ResourceNotFoundException;
 import uz.pdp.library_management_system.mapper.CategoryMapper;
+import uz.pdp.library_management_system.mapper.interfaces.CategoryMapperInterface;
 import uz.pdp.library_management_system.repository.CategoryRepository;
 import uz.pdp.library_management_system.request.CategoryRequest;
 import uz.pdp.library_management_system.response.CategoryResponse;
@@ -21,13 +22,12 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
     private final SessionId sessionId;
+    private final CategoryMapperInterface categoryMapperInterface;
 
     @Override
     public ResponseDTO<CategoryResponse> createCategory(CategoryRequest categoryRequest) {
         Category category = categoryMapper.toEntity(categoryRequest);
-        System.out.println("category = " + category);
         Long authUserId = sessionId.getSessionId();
-        System.out.println("authUserId = " + authUserId);
         if (!categoryRequest.getCreatedBy().equals(authUserId)) {
             return ResponseDTO.<CategoryResponse>builder()
                     .code(HttpStatus.NOT_FOUND.value())
@@ -52,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .code(HttpStatus.OK.value())
                 .message("Category successfully found")
                 .success(true)
-                .data(categoryMapper.toResponse(category))
+                .data(categoryMapperInterface.toResponse(category))
                 .build();
     }
 

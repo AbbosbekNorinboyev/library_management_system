@@ -8,20 +8,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
-public class Book {
+@Data
+public class Library {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String author;
-    private Integer totalPages;
-    private Long availableCopies;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private String name;
+    private String address;
+    private String phone;
+    private String email;
     private Long createdBy;
     private LocalDateTime createdAt;
     private Long updatedBy;

@@ -14,7 +14,7 @@ public class RegisterValidation {
         if (!registerCreateDTO.getUsername().matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
             errors.add(new ErrorDTO("username", "username is invalid"));
         }
-        if (!registerCreateDTO.getPhoneNumber().matches("^\\+9989\\d{8}$")) {
+        if (!registerCreateDTO.getPhoneNumber().matches("^\\+998\\d{9}$")) {
             errors.add(new ErrorDTO("phoneNumber", "phoneNUmber is invalid"));
         }
         return errors;
