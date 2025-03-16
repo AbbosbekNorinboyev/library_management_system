@@ -16,6 +16,7 @@ public class CategoryRequest {
     @NotBlank(message = "name can not be null or empty")
     private String name;
     private String description;
+    private Long libraryId;
     private Long createdBy;
     private LocalDateTime createdAt;
     private Long updatedBy;

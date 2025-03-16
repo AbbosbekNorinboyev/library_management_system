@@ -50,9 +50,10 @@ public class SecurityConfig {
                             .requestMatchers(
                                     "/api/categories/create",
                                     "/api/categories/update",
-                                    "/api/categories/delete",
                                     "/api/libraries/create",
-                                    "/api/libraries/update").hasRole("ADMIN")
+                                    "/api/libraries/update",
+                                    "/api/books/create",
+                                    "/api/books/update").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 })
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)

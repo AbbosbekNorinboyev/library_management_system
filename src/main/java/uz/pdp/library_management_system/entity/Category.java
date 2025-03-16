@@ -17,6 +17,9 @@ public class Category {
     private Long id;
     private String name;
     private String description;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "library_id")
+    private Library library;
     private Long createdBy;
     private LocalDateTime createdAt;
     private Long updatedBy;

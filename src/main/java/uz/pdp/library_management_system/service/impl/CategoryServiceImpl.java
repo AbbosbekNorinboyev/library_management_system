@@ -5,10 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.entity.Category;
+import uz.pdp.library_management_system.entity.Library;
 import uz.pdp.library_management_system.exception.ResourceNotFoundException;
 import uz.pdp.library_management_system.mapper.CategoryMapper;
 import uz.pdp.library_management_system.mapper.interfaces.CategoryMapperInterface;
 import uz.pdp.library_management_system.repository.CategoryRepository;
+import uz.pdp.library_management_system.repository.LibraryRepository;
 import uz.pdp.library_management_system.request.CategoryRequest;
 import uz.pdp.library_management_system.response.CategoryResponse;
 import uz.pdp.library_management_system.security.SessionId;
@@ -23,6 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final SessionId sessionId;
     private final CategoryMapperInterface categoryMapperInterface;
+    private final LibraryRepository libraryRepository;
 
     @Override
     public ResponseDTO<CategoryResponse> createCategory(CategoryRequest categoryRequest) {
@@ -35,6 +38,9 @@ public class CategoryServiceImpl implements CategoryService {
                     .success(false)
                     .build();
         }
+        Library library = libraryRepository.findById(categoryRequest.getLibraryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Library not found: " + categoryRequest.getLibraryId()));
+        category.setLibrary(library);
         categoryRepository.save(category);
         return ResponseDTO.<CategoryResponse>builder()
                 .code(HttpStatus.OK.value())

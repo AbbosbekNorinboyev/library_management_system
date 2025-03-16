@@ -10,6 +10,7 @@ import uz.pdp.library_management_system.exception.ResourceNotFoundException;
 import uz.pdp.library_management_system.mapper.LibraryMapper;
 import uz.pdp.library_management_system.repository.LibraryRepository;
 import uz.pdp.library_management_system.request.LibraryRequest;
+import uz.pdp.library_management_system.response.CategoryResponse;
 import uz.pdp.library_management_system.response.LibraryResponse;
 import uz.pdp.library_management_system.security.SessionId;
 import uz.pdp.library_management_system.service.LibraryService;
@@ -84,6 +85,15 @@ public class LibraryServiceImpl implements LibraryService {
         library.setName(libraryRequest.getName());
         library.setAddress(libraryRequest.getAddress());
         library.setEmail(libraryRequest.getEmail());
+        Long authUserId = sessionId.getSessionId();
+        if (!libraryRequest.getCreatedBy().equals(authUserId)) {
+            return ResponseDTO.<Void>builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .message("AUthUser not found")
+                    .success(false)
+                    .build();
+        }
+        library.setCreatedBy(libraryRequest.getCreatedBy());
         library.setUpdatedBy(libraryRequest.getUpdatedBy());
         library.setUpdatedAt(libraryRequest.getUpdatedAt());
         libraryRepository.save(library);
