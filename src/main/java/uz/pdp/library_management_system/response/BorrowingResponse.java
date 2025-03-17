@@ -1,6 +1,5 @@
-package uz.pdp.library_management_system.entity;
+package uz.pdp.library_management_system.response;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,18 +8,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @Data
-public class Borrowing {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id")
-    private Book book;
+public class BorrowingResponse {
+    private Long bookId;
     private LocalDate borrowDate; // kitobni ijaraga olingan sanasi
     private LocalDate dueDate; // kitobni qaytarish sanasi
     private LocalDate returnDate; // kitobni qaytarilgan sanasi

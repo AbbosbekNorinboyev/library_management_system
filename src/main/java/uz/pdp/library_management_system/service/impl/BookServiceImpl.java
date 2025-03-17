@@ -1,6 +1,7 @@
 package uz.pdp.library_management_system.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.dto.ErrorDTO;
@@ -13,7 +14,6 @@ import uz.pdp.library_management_system.repository.BookRepository;
 import uz.pdp.library_management_system.repository.CategoryRepository;
 import uz.pdp.library_management_system.request.BookRequest;
 import uz.pdp.library_management_system.response.BookResponse;
-import uz.pdp.library_management_system.response.CategoryResponse;
 import uz.pdp.library_management_system.security.SessionId;
 import uz.pdp.library_management_system.service.BookService;
 import uz.pdp.library_management_system.validation.BookValidation;
@@ -22,6 +22,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
@@ -44,6 +45,7 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + bookRequest.getCategoryId()));
         Long authUserId = sessionId.getSessionId();
         if (!bookRequest.getCreatedBy().equals(authUserId)) {
+            log.error("AuthUser not found");
             return ResponseDTO.<BookResponse>builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AuthUser not found")
@@ -53,6 +55,7 @@ public class BookServiceImpl implements BookService {
         Book book = bookMapper.toEntity(bookRequest);
         book.setCategory(category);
         bookRepository.save(book);
+        log.info("Book successfully created");
         return ResponseDTO.<BookResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Book successfully created")
@@ -65,6 +68,7 @@ public class BookServiceImpl implements BookService {
     public ResponseDTO<BookResponse> getBook(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + bookId));
+        log.info("Book successfully found");
         return ResponseDTO.<BookResponse>builder()
                 .code(HttpStatus.OK.value())
                 .message("Book successfully found")
@@ -76,6 +80,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public ResponseDTO<List<BookResponse>> getAllBook() {
         List<Book> books = bookRepository.findAll();
+        log.info("Book list successfully found");
         return ResponseDTO.<List<BookResponse>>builder()
                 .code(HttpStatus.OK.value())
                 .message("Book list successfully found")
@@ -94,6 +99,7 @@ public class BookServiceImpl implements BookService {
         book.setAvailableCopies(bookRequest.getAvailableCopies());
         Long authUserId = sessionId.getSessionId();
         if (!bookRequest.getCreatedBy().equals(authUserId)) {
+            log.error("AuthUser not found");
             return ResponseDTO.<Void>builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AuthUser not found")
@@ -103,6 +109,7 @@ public class BookServiceImpl implements BookService {
         book.setCreatedBy(bookRequest.getCreatedBy());
         book.setUpdatedAt(bookRequest.getUpdatedAt());
         bookRepository.save(book);
+        log.info("Book successfully updated");
         return ResponseDTO.<Void>builder()
                 .code(HttpStatus.OK.value())
                 .message("Book successfully updated")
