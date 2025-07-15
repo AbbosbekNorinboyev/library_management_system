@@ -14,7 +14,7 @@ import uz.pdp.library_management_system.repository.CategoryRepository;
 import uz.pdp.library_management_system.repository.LibraryRepository;
 import uz.pdp.library_management_system.request.CategoryRequest;
 import uz.pdp.library_management_system.response.CategoryResponse;
-import uz.pdp.library_management_system.security.SessionId;
+import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.CategoryService;
 
 import java.util.List;

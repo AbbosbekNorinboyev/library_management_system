@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class LibraryResponse {
+    private Long id;
     private String name;
     private String address;
     private String phone;

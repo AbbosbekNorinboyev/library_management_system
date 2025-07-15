@@ -22,6 +22,7 @@ public class LibraryMapper {
 
     public LibraryResponse toResponse(Library library) {
         return LibraryResponse.builder()
+                .id(library.getId())
                 .name(library.getName())
                 .address(library.getAddress())
                 .phone(library.getPhone())

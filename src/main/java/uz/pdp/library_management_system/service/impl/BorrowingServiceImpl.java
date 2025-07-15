@@ -13,7 +13,7 @@ import uz.pdp.library_management_system.repository.BookRepository;
 import uz.pdp.library_management_system.repository.BorrowingRepository;
 import uz.pdp.library_management_system.request.BorrowingRequest;
 import uz.pdp.library_management_system.response.BorrowingResponse;
-import uz.pdp.library_management_system.security.SessionId;
+import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.BorrowingService;
 
 import java.util.List;

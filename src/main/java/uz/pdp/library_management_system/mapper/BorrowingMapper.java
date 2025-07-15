@@ -33,6 +33,7 @@ public class BorrowingMapper {
 
     public BorrowingResponse toResponse(Borrowing borrowing) {
         return BorrowingResponse.builder()
+                .id(borrowing.getId())
                 .bookId(borrowing.getBook().getId())
                 .borrowDate(borrowing.getBorrowDate())
                 .dueDate(borrowing.getDueDate())

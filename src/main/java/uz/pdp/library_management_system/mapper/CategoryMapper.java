@@ -33,6 +33,7 @@ public class CategoryMapper {
 
     public CategoryResponse toResponse(Category category) {
         return CategoryResponse.builder()
+                .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
                 .libraryId(category.getLibrary().getId())

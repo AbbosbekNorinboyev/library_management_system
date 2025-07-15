@@ -1,4 +1,4 @@
-package uz.pdp.library_management_system.security;
+package uz.pdp.library_management_system.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;

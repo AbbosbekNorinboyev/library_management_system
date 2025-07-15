@@ -1,4 +1,4 @@
-package uz.pdp.library_management_system.validation;
+package uz.pdp.library_management_system.util.validation;
 
 import org.springframework.stereotype.Component;
 import uz.pdp.library_management_system.dto.ErrorDTO;

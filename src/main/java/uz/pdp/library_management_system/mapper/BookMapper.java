@@ -35,6 +35,7 @@ public class BookMapper {
 
     public BookResponse toResponse(Book book) {
         return BookResponse.builder()
+                .id(book.getId())
                 .author(book.getAuthor())
                 .title(book.getTitle())
                 .totalPages(book.getTotalPages())

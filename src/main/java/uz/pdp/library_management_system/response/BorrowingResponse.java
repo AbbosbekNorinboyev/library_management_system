@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 public class BorrowingResponse {
+    private Long id;
     private Long bookId;
     private LocalDate borrowDate; // kitobni ijaraga olingan sanasi
     private LocalDate dueDate; // kitobni qaytarish sanasi

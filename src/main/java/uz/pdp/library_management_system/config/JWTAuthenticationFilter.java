@@ -1,4 +1,4 @@
-package uz.pdp.library_management_system.filter;
+package uz.pdp.library_management_system.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,14 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uz.pdp.library_management_system.security.CustomUserDetailsService;
 import uz.pdp.library_management_system.util.JWTUtil;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JWTFilter extends OncePerRequestFilter {
+public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService customUserDetailsService;
     private final JWTUtil jwtUtil;
 

@@ -15,9 +15,9 @@ import uz.pdp.library_management_system.entity.AuthUser;
 import uz.pdp.library_management_system.enums.Role;
 import uz.pdp.library_management_system.exception.CustomUserNotFoundException;
 import uz.pdp.library_management_system.repository.AuthUserRepository;
-import uz.pdp.library_management_system.security.CustomUserDetailsService;
+import uz.pdp.library_management_system.config.CustomUserDetailsService;
 import uz.pdp.library_management_system.util.JWTUtil;
-import uz.pdp.library_management_system.validation.RegisterValidation;
+import uz.pdp.library_management_system.util.validation.RegisterValidation;
 
 import java.util.List;
 import java.util.Optional;

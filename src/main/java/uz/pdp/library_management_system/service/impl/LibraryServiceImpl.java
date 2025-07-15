@@ -12,9 +12,9 @@ import uz.pdp.library_management_system.mapper.LibraryMapper;
 import uz.pdp.library_management_system.repository.LibraryRepository;
 import uz.pdp.library_management_system.request.LibraryRequest;
 import uz.pdp.library_management_system.response.LibraryResponse;
-import uz.pdp.library_management_system.security.SessionId;
+import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.LibraryService;
-import uz.pdp.library_management_system.validation.LibraryValidation;
+import uz.pdp.library_management_system.util.validation.LibraryValidation;
 
 import java.util.List;
 

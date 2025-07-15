@@ -14,9 +14,9 @@ import uz.pdp.library_management_system.repository.BookRepository;
 import uz.pdp.library_management_system.repository.CategoryRepository;
 import uz.pdp.library_management_system.request.BookRequest;
 import uz.pdp.library_management_system.response.BookResponse;
-import uz.pdp.library_management_system.security.SessionId;
+import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.BookService;
-import uz.pdp.library_management_system.validation.BookValidation;
+import uz.pdp.library_management_system.util.validation.BookValidation;
 
 import java.util.List;
 
