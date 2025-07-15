@@ -1,14 +1,14 @@
 package uz.pdp.library_management_system.service;
 
-import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.dto.request.BookRequest;
-import uz.pdp.library_management_system.dto.response.BookResponse;
-
-import java.util.List;
+import uz.pdp.library_management_system.dto.response.Response;
 
 public interface BookService {
-    ResponseDTO<BookResponse> createBook(BookRequest bookRequest);
-    ResponseDTO<BookResponse> getBook(Long bookId);
-    ResponseDTO<List<BookResponse>> getAllBook();
-    ResponseDTO<Void> updateBook(BookRequest bookRequest, Long bookId);
+    Response createBook(BookRequest bookRequest);
+
+    Response getBook(Long bookId);
+
+    Response getAllBook();
+
+    Response updateBook(BookRequest bookRequest, Long bookId);
 }

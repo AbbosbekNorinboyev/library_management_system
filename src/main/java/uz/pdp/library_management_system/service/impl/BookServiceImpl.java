@@ -4,17 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.ErrorDTO;
-import uz.pdp.library_management_system.dto.ResponseDTO;
+import uz.pdp.library_management_system.dto.request.BookRequest;
+import uz.pdp.library_management_system.dto.response.Response;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.BookMapper;
 import uz.pdp.library_management_system.repository.BookRepository;
 import uz.pdp.library_management_system.repository.CategoryRepository;
-import uz.pdp.library_management_system.dto.request.BookRequest;
-import uz.pdp.library_management_system.dto.response.BookResponse;
-import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.BookService;
 import uz.pdp.library_management_system.util.validation.BookValidation;
 
@@ -31,14 +30,14 @@ public class BookServiceImpl implements BookService {
     private final SessionId sessionId;
 
     @Override
-    public ResponseDTO<BookResponse> createBook(BookRequest bookRequest) {
+    public Response createBook(BookRequest bookRequest) {
         List<ErrorDTO> errors = bookValidation.validate(bookRequest);
         if (!errors.isEmpty()) {
-            return ResponseDTO.<BookResponse>builder()
+            return Response.builder()
                     .code(HttpStatus.BAD_REQUEST.value())
                     .message("Book validation error")
                     .success(false)
-                    .errors(errors)
+                    .error(errors)
                     .build();
         }
         Category category = categoryRepository.findById(bookRequest.getCategoryId())
@@ -46,7 +45,7 @@ public class BookServiceImpl implements BookService {
         Long authUserId = sessionId.getSessionId();
         if (!bookRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return ResponseDTO.<BookResponse>builder()
+            return Response.builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AuthUser not found")
                     .success(false)
@@ -56,7 +55,7 @@ public class BookServiceImpl implements BookService {
         book.setCategory(category);
         bookRepository.save(book);
         log.info("Book successfully created");
-        return ResponseDTO.<BookResponse>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Book successfully created")
                 .success(true)
@@ -65,11 +64,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseDTO<BookResponse> getBook(Long bookId) {
+    public Response getBook(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
         log.info("Book successfully found");
-        return ResponseDTO.<BookResponse>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Book successfully found")
                 .success(true)
@@ -78,10 +77,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseDTO<List<BookResponse>> getAllBook() {
+    public Response getAllBook() {
         List<Book> books = bookRepository.findAll();
         log.info("Book list successfully found");
-        return ResponseDTO.<List<BookResponse>>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Book list successfully found")
                 .success(true)
@@ -90,7 +89,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public ResponseDTO<Void> updateBook(BookRequest bookRequest, Long bookId) {
+    public Response updateBook(BookRequest bookRequest, Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
         book.setTitle(bookRequest.getTitle());
@@ -100,7 +99,7 @@ public class BookServiceImpl implements BookService {
         Long authUserId = sessionId.getSessionId();
         if (!bookRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return ResponseDTO.<Void>builder()
+            return Response.builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AuthUser not found")
                     .success(false)
@@ -110,7 +109,7 @@ public class BookServiceImpl implements BookService {
         book.setUpdatedAt(bookRequest.getUpdatedAt());
         bookRepository.save(book);
         log.info("Book successfully updated");
-        return ResponseDTO.<Void>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Book successfully updated")
                 .success(true)

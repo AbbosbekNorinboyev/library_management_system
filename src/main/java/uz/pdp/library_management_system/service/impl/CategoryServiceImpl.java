@@ -5,9 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
-import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
-import uz.pdp.library_management_system.dto.response.CategoryResponse;
+import uz.pdp.library_management_system.dto.response.Response;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.entity.Library;
 import uz.pdp.library_management_system.exception.CustomException;
@@ -30,12 +29,12 @@ public class CategoryServiceImpl implements CategoryService {
     private final LibraryRepository libraryRepository;
 
     @Override
-    public ResponseDTO<CategoryResponse> createCategory(CategoryRequest categoryRequest) {
+    public Response createCategory(CategoryRequest categoryRequest) {
         Category category = categoryMapper.toEntity(categoryRequest);
         Long authUserId = sessionId.getSessionId();
         if (!categoryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return ResponseDTO.<CategoryResponse>builder()
+            return Response.builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AUthUser not found")
                     .success(false)
@@ -46,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setLibrary(library);
         categoryRepository.save(category);
         log.info("Category successfully created");
-        return ResponseDTO.<CategoryResponse>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Category successfully created")
                 .success(true)
@@ -55,11 +54,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseDTO<CategoryResponse> getCategory(Long categoryId) {
+    public Response getCategory(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         log.info("Category successfully found");
-        return ResponseDTO.<CategoryResponse>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Category successfully found")
                 .success(true)
@@ -68,10 +67,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseDTO<List<CategoryResponse>> getAllCategory() {
+    public Response getAllCategory() {
         List<Category> categories = categoryRepository.findAll();
         log.info("Category list successfully found");
-        return ResponseDTO.<List<CategoryResponse>>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Category list successfully found")
                 .success(true)
@@ -80,7 +79,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseDTO<Void> updateCategory(CategoryRequest categoryRequest, Long categoryId) {
+    public Response updateCategory(CategoryRequest categoryRequest, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         category.setName(categoryRequest.getName());
@@ -89,7 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
         Long authUserId = sessionId.getSessionId();
         if (!categoryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return ResponseDTO.<Void>builder()
+            return Response.builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AUthUser not found")
                     .success(false)
@@ -98,7 +97,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdatedBy(categoryRequest.getUpdatedBy());
         categoryRepository.save(category);
         log.info("Category successfully updated");
-        return ResponseDTO.<Void>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Category successfully updated")
                 .success(true)

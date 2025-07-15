@@ -1,17 +1,14 @@
 package uz.pdp.library_management_system.service;
 
-import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.dto.request.BorrowingRequest;
-import uz.pdp.library_management_system.dto.response.BorrowingResponse;
-
-import java.util.List;
+import uz.pdp.library_management_system.dto.response.Response;
 
 public interface BorrowingService {
-    ResponseDTO<BorrowingResponse> createBorrowing(BorrowingRequest borrowingRequest);
+    Response createBorrowing(BorrowingRequest borrowingRequest);
 
-    ResponseDTO<BorrowingResponse> getBorrowing(Long borrowingId);
+    Response getBorrowing(Long borrowingId);
 
-    ResponseDTO<List<BorrowingResponse>> getAllBorrowing();
+    Response getAllBorrowing();
 
-    ResponseDTO<Void> updateBorrowing(BorrowingRequest borrowingRequest, Long borrowingId);
+    Response updateBorrowing(BorrowingRequest borrowingRequest, Long borrowingId);
 }

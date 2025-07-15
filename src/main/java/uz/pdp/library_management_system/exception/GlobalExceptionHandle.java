@@ -46,7 +46,7 @@ public class GlobalExceptionHandle {
         String errorMessage = "Invalid format for field " + ex.getPath().get(0).getFieldName();
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(HttpStatus.BAD_REQUEST.value()) // INTERNAL_SERVER_ERROR
-                .message(ex.getMessage())
+                .message(errorMessage)
                 .build();
 
         var response = Response.builder()

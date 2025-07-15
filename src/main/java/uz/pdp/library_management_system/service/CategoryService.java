@@ -1,14 +1,14 @@
 package uz.pdp.library_management_system.service;
 
-import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
-import uz.pdp.library_management_system.dto.response.CategoryResponse;
-
-import java.util.List;
+import uz.pdp.library_management_system.dto.response.Response;
 
 public interface CategoryService {
-    ResponseDTO<CategoryResponse> createCategory(CategoryRequest categoryRequest);
-    ResponseDTO<CategoryResponse> getCategory(Long categoryId);
-    ResponseDTO<List<CategoryResponse>> getAllCategory();
-    ResponseDTO<Void> updateCategory(CategoryRequest categoryRequest, Long categoryId);
+    Response createCategory(CategoryRequest categoryRequest);
+
+    Response getCategory(Long categoryId);
+
+    Response getAllCategory();
+
+    Response updateCategory(CategoryRequest categoryRequest, Long categoryId);
 }

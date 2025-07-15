@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.dto.ResponseDTO;
+import uz.pdp.library_management_system.dto.response.Response;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Borrowing;
 import uz.pdp.library_management_system.exception.CustomException;
@@ -28,11 +29,11 @@ public class BorrowingServiceImpl implements BorrowingService {
     private final BookRepository bookRepository;
 
     @Override
-    public ResponseDTO<BorrowingResponse> createBorrowing(BorrowingRequest borrowingRequest) {
+    public Response createBorrowing(BorrowingRequest borrowingRequest) {
         Long authUserId = sessionId.getSessionId();
         if (!borrowingRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return ResponseDTO.<BorrowingResponse>builder()
+            return Response.builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AuthUser not found")
                     .success(false)
@@ -41,7 +42,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         Borrowing borrowing = borrowingMapper.toEntity(borrowingRequest);
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully created");
-        return ResponseDTO.<BorrowingResponse>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Borrowing successfully created")
                 .success(true)
@@ -50,11 +51,11 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
-    public ResponseDTO<BorrowingResponse> getBorrowing(Long borrowingId) {
+    public Response getBorrowing(Long borrowingId) {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         log.info("Borrowing successfully found");
-        return ResponseDTO.<BorrowingResponse>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Borrowing successfully found")
                 .success(true)
@@ -63,10 +64,10 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
-    public ResponseDTO<List<BorrowingResponse>> getAllBorrowing() {
+    public Response getAllBorrowing() {
         List<Borrowing> borrowings = borrowingRepository.findAll();
         log.info("Borrowing list successfully found");
-        return ResponseDTO.<List<BorrowingResponse>>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Borrowing list successfully found")
                 .success(true)
@@ -75,7 +76,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
-    public ResponseDTO<Void> updateBorrowing(BorrowingRequest borrowingRequest, Long borrowingId) {
+    public Response updateBorrowing(BorrowingRequest borrowingRequest, Long borrowingId) {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         Book book = bookRepository.findById(borrowingRequest.getBookId())
@@ -87,7 +88,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         Long authUserId = sessionId.getSessionId();
         if (!borrowingRequest.getUpdatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return ResponseDTO.<Void>builder()
+            return Response.builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AuthUser not found")
                     .success(false)
@@ -97,7 +98,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setUpdatedAt(borrowingRequest.getUpdatedAt());
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully updated");
-        return ResponseDTO.<Void>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Borrowing successfully updated")
                 .success(true)

@@ -1,17 +1,14 @@
 package uz.pdp.library_management_system.service;
 
-import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.dto.request.LibraryRequest;
-import uz.pdp.library_management_system.dto.response.LibraryResponse;
-
-import java.util.List;
+import uz.pdp.library_management_system.dto.response.Response;
 
 public interface LibraryService {
-    ResponseDTO<LibraryResponse> createLibrary(LibraryRequest libraryRequest);
+    Response createLibrary(LibraryRequest libraryRequest);
 
-    ResponseDTO<LibraryResponse> getLibrary(Long libraryId);
+    Response getLibrary(Long libraryId);
 
-    ResponseDTO<List<LibraryResponse>> getAllLibrary();
+    Response getAllLibrary();
 
-    ResponseDTO<Void> updateLibrary(LibraryRequest libraryRequest, Long libraryId);
+    Response updateLibrary(LibraryRequest libraryRequest, Long libraryId);
 }

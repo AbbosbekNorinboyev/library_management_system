@@ -3,12 +3,9 @@ package uz.pdp.library_management_system.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
-import uz.pdp.library_management_system.dto.response.CategoryResponse;
+import uz.pdp.library_management_system.dto.response.Response;
 import uz.pdp.library_management_system.service.impl.CategoryServiceImpl;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -17,23 +14,23 @@ public class CategoryController {
     private final CategoryServiceImpl categoryService;
 
     @PostMapping("/create")
-    public ResponseDTO<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest categoryRequest) {
+    public Response createCategory(@RequestBody @Valid CategoryRequest categoryRequest) {
         return categoryService.createCategory(categoryRequest);
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseDTO<CategoryResponse> getCategory(@PathVariable Long categoryId) {
+    public Response getCategory(@PathVariable Long categoryId) {
         return categoryService.getCategory(categoryId);
     }
 
     @GetMapping
-    public ResponseDTO<List<CategoryResponse>> getAllResponse() {
+    public Response getAllResponse() {
         return categoryService.getAllCategory();
     }
 
     @PutMapping("/update/{categoryId}")
-    public ResponseDTO<Void> updateCategory(@RequestBody @Valid CategoryRequest categoryRequest,
-                                            @PathVariable Long categoryId) {
+    public Response updateCategory(@RequestBody @Valid CategoryRequest categoryRequest,
+                                   @PathVariable Long categoryId) {
         return categoryService.updateCategory(categoryRequest, categoryId);
     }
 }

@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.ErrorDTO;
-import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.dto.request.LibraryRequest;
-import uz.pdp.library_management_system.dto.response.LibraryResponse;
+import uz.pdp.library_management_system.dto.response.Response;
 import uz.pdp.library_management_system.entity.Library;
 import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.LibraryMapper;
@@ -28,20 +27,20 @@ public class LibraryServiceImpl implements LibraryService {
     private final SessionId sessionId;
 
     @Override
-    public ResponseDTO<LibraryResponse> createLibrary(LibraryRequest libraryRequest) {
+    public Response createLibrary(LibraryRequest libraryRequest) {
         List<ErrorDTO> errors = libraryValidation.validate(libraryRequest);
         if (!errors.isEmpty()) {
-            return ResponseDTO.<LibraryResponse>builder()
+            return Response.builder()
                     .code(HttpStatus.BAD_REQUEST.value())
                     .message("Library validation error")
                     .success(false)
-                    .errors(errors)
+                    .error(errors)
                     .build();
         }
         Long authUserId = sessionId.getSessionId();
         if (!libraryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return ResponseDTO.<LibraryResponse>builder()
+            return Response.builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AuthUser not found")
                     .success(false)
@@ -50,7 +49,7 @@ public class LibraryServiceImpl implements LibraryService {
         Library library = libraryMapper.toEntity(libraryRequest);
         libraryRepository.save(library);
         log.info("Library successfully created");
-        return ResponseDTO.<LibraryResponse>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Library successfully created")
                 .success(true)
@@ -59,11 +58,11 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public ResponseDTO<LibraryResponse> getLibrary(Long libraryId) {
+    public Response getLibrary(Long libraryId) {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         log.info("Library successfully found");
-        return ResponseDTO.<LibraryResponse>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Library successfully found")
                 .success(true)
@@ -72,10 +71,10 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public ResponseDTO<List<LibraryResponse>> getAllLibrary() {
+    public Response getAllLibrary() {
         List<Library> libraries = libraryRepository.findAll();
         log.info("Library list successfully found");
-        return ResponseDTO.<List<LibraryResponse>>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Library list successfully found")
                 .success(true)
@@ -84,7 +83,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public ResponseDTO<Void> updateLibrary(LibraryRequest libraryRequest, Long libraryId) {
+    public Response updateLibrary(LibraryRequest libraryRequest, Long libraryId) {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         library.setName(libraryRequest.getName());
@@ -93,7 +92,7 @@ public class LibraryServiceImpl implements LibraryService {
         Long authUserId = sessionId.getSessionId();
         if (!libraryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return ResponseDTO.<Void>builder()
+            return Response.builder()
                     .code(HttpStatus.NOT_FOUND.value())
                     .message("AUthUser not found")
                     .success(false)
@@ -104,7 +103,7 @@ public class LibraryServiceImpl implements LibraryService {
         library.setUpdatedAt(libraryRequest.getUpdatedAt());
         libraryRepository.save(library);
         log.info("Library successfully updated");
-        return ResponseDTO.<Void>builder()
+        return Response.builder()
                 .code(HttpStatus.OK.value())
                 .message("Library successfully updated")
                 .success(true)
