@@ -1,13 +1,14 @@
 package uz.pdp.library_management_system.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Borrowing;
-import uz.pdp.library_management_system.exception.ResourceNotFoundException;
+import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.repository.BookRepository;
-import uz.pdp.library_management_system.request.BorrowingRequest;
-import uz.pdp.library_management_system.response.BorrowingResponse;
+import uz.pdp.library_management_system.dto.request.BorrowingRequest;
+import uz.pdp.library_management_system.dto.response.BorrowingResponse;
 
 @Component
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class BorrowingMapper {
 
     public Borrowing toEntity(BorrowingRequest borrowingRequest) {
         Book book = bookRepository.findById(borrowingRequest.getBookId())
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + borrowingRequest.getBookId()));
         return Borrowing.builder()
                 .book(book)
                 .borrowDate(borrowingRequest.getBorrowDate())

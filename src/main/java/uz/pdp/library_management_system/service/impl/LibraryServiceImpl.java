@@ -4,15 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.ErrorDTO;
 import uz.pdp.library_management_system.dto.ResponseDTO;
+import uz.pdp.library_management_system.dto.request.LibraryRequest;
+import uz.pdp.library_management_system.dto.response.LibraryResponse;
 import uz.pdp.library_management_system.entity.Library;
-import uz.pdp.library_management_system.exception.ResourceNotFoundException;
+import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.LibraryMapper;
 import uz.pdp.library_management_system.repository.LibraryRepository;
-import uz.pdp.library_management_system.request.LibraryRequest;
-import uz.pdp.library_management_system.response.LibraryResponse;
-import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.LibraryService;
 import uz.pdp.library_management_system.util.validation.LibraryValidation;
 
@@ -61,7 +61,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public ResponseDTO<LibraryResponse> getLibrary(Long libraryId) {
         Library library = libraryRepository.findById(libraryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Library not found: " + libraryId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         log.info("Library successfully found");
         return ResponseDTO.<LibraryResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -86,7 +86,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public ResponseDTO<Void> updateLibrary(LibraryRequest libraryRequest, Long libraryId) {
         Library library = libraryRepository.findById(libraryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Library not found: " + libraryId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         library.setName(libraryRequest.getName());
         library.setAddress(libraryRequest.getAddress());
         library.setEmail(libraryRequest.getEmail());

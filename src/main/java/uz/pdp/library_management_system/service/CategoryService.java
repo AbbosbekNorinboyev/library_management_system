@@ -1,8 +1,8 @@
 package uz.pdp.library_management_system.service;
 
 import uz.pdp.library_management_system.dto.ResponseDTO;
-import uz.pdp.library_management_system.request.CategoryRequest;
-import uz.pdp.library_management_system.response.CategoryResponse;
+import uz.pdp.library_management_system.dto.request.CategoryRequest;
+import uz.pdp.library_management_system.dto.response.CategoryResponse;
 
 import java.util.List;
 

@@ -5,8 +5,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.entity.Library;
-import uz.pdp.library_management_system.request.CategoryRequest;
-import uz.pdp.library_management_system.response.CategoryResponse;
+import uz.pdp.library_management_system.dto.request.CategoryRequest;
+import uz.pdp.library_management_system.dto.response.CategoryResponse;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapperInterface {

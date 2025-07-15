@@ -1,12 +1,13 @@
 package uz.pdp.library_management_system.mapper;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.entity.Library;
-import uz.pdp.library_management_system.exception.ResourceNotFoundException;
+import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.repository.LibraryRepository;
-import uz.pdp.library_management_system.request.CategoryRequest;
-import uz.pdp.library_management_system.response.CategoryResponse;
+import uz.pdp.library_management_system.dto.request.CategoryRequest;
+import uz.pdp.library_management_system.dto.response.CategoryResponse;
 
 @Component
 public class CategoryMapper {
@@ -19,7 +20,7 @@ public class CategoryMapper {
 
     public Category toEntity(CategoryRequest categoryRequest) {
         Library library = libraryRepository.findById(categoryRequest.getLibraryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Library not found: " + categoryRequest.getLibraryId()));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"Library not found: " + categoryRequest.getLibraryId()));
         return Category.builder()
                 .name(categoryRequest.getName())
                 .description(categoryRequest.getDescription())

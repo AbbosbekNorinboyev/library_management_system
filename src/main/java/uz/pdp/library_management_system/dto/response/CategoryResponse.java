@@ -1,4 +1,4 @@
-package uz.pdp.library_management_system.response;
+package uz.pdp.library_management_system.dto.response;
 
 import lombok.*;
 

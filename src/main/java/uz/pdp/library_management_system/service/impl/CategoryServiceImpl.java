@@ -4,17 +4,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.ResponseDTO;
+import uz.pdp.library_management_system.dto.request.CategoryRequest;
+import uz.pdp.library_management_system.dto.response.CategoryResponse;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.entity.Library;
-import uz.pdp.library_management_system.exception.ResourceNotFoundException;
+import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.CategoryMapper;
 import uz.pdp.library_management_system.mapper.interfaces.CategoryMapperInterface;
 import uz.pdp.library_management_system.repository.CategoryRepository;
 import uz.pdp.library_management_system.repository.LibraryRepository;
-import uz.pdp.library_management_system.request.CategoryRequest;
-import uz.pdp.library_management_system.response.CategoryResponse;
-import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.CategoryService;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
                     .build();
         }
         Library library = libraryRepository.findById(categoryRequest.getLibraryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Library not found: " + categoryRequest.getLibraryId()));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + categoryRequest.getLibraryId()));
         category.setLibrary(library);
         categoryRepository.save(category);
         log.info("Category successfully created");
@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseDTO<CategoryResponse> getCategory(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + categoryId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         log.info("Category successfully found");
         return ResponseDTO.<CategoryResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -82,7 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseDTO<Void> updateCategory(CategoryRequest categoryRequest, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + categoryId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         category.setName(categoryRequest.getName());
         category.setDescription(categoryRequest.getDescription());
         category.setUpdatedAt(categoryRequest.getUpdatedAt());

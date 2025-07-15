@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Borrowing;
-import uz.pdp.library_management_system.exception.ResourceNotFoundException;
+import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.BorrowingMapper;
 import uz.pdp.library_management_system.repository.BookRepository;
 import uz.pdp.library_management_system.repository.BorrowingRepository;
-import uz.pdp.library_management_system.request.BorrowingRequest;
-import uz.pdp.library_management_system.response.BorrowingResponse;
+import uz.pdp.library_management_system.dto.request.BorrowingRequest;
+import uz.pdp.library_management_system.dto.response.BorrowingResponse;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.BorrowingService;
 
@@ -52,7 +52,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     @Override
     public ResponseDTO<BorrowingResponse> getBorrowing(Long borrowingId) {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found: " + borrowingId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         log.info("Borrowing successfully found");
         return ResponseDTO.<BorrowingResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -77,9 +77,9 @@ public class BorrowingServiceImpl implements BorrowingService {
     @Override
     public ResponseDTO<Void> updateBorrowing(BorrowingRequest borrowingRequest, Long borrowingId) {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found: " + borrowingId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         Book book = bookRepository.findById(borrowingRequest.getBookId())
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + borrowingRequest.getBookId()));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + borrowingRequest.getBookId()));
         borrowing.setBook(book);
         borrowing.setBorrowDate(borrowingRequest.getBorrowDate());
         borrowing.setDueDate(borrowingRequest.getDueDate());

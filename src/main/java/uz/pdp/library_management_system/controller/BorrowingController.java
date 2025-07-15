@@ -3,8 +3,8 @@ package uz.pdp.library_management_system.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.library_management_system.dto.ResponseDTO;
-import uz.pdp.library_management_system.request.BorrowingRequest;
-import uz.pdp.library_management_system.response.BorrowingResponse;
+import uz.pdp.library_management_system.dto.request.BorrowingRequest;
+import uz.pdp.library_management_system.dto.response.BorrowingResponse;
 import uz.pdp.library_management_system.service.impl.BorrowingServiceImpl;
 
 import java.util.List;

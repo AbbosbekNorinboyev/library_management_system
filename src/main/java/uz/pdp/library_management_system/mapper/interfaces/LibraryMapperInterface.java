@@ -3,8 +3,8 @@ package uz.pdp.library_management_system.mapper.interfaces;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import uz.pdp.library_management_system.entity.Library;
-import uz.pdp.library_management_system.request.LibraryRequest;
-import uz.pdp.library_management_system.response.LibraryResponse;
+import uz.pdp.library_management_system.dto.request.LibraryRequest;
+import uz.pdp.library_management_system.dto.response.LibraryResponse;
 
 @Mapper(componentModel = "spring")
 public interface LibraryMapperInterface {

@@ -1,6 +1,7 @@
 package uz.pdp.library_management_system.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.entity.AuthUser;
-import uz.pdp.library_management_system.exception.CustomUserNotFoundException;
+import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.repository.AuthUserRepository;
 
 import java.util.HashSet;
@@ -24,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AuthUser authUser = authUserRepository.findByUsername(username)
-                .orElseThrow(() -> new CustomUserNotFoundException("AuthUser not found by username: " + username));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "AuthUser not found by username: " + username));
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + authUser.getRole().name()));
         return new User(authUser.getUsername(), authUser.getPassword(), authorities);

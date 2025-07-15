@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.library_management_system.dto.ResponseDTO;
-import uz.pdp.library_management_system.request.CategoryRequest;
-import uz.pdp.library_management_system.response.CategoryResponse;
+import uz.pdp.library_management_system.dto.request.CategoryRequest;
+import uz.pdp.library_management_system.dto.response.CategoryResponse;
 import uz.pdp.library_management_system.service.impl.CategoryServiceImpl;
 
 import java.util.List;

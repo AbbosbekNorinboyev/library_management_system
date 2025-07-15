@@ -2,8 +2,8 @@ package uz.pdp.library_management_system.mapper;
 
 import org.springframework.stereotype.Component;
 import uz.pdp.library_management_system.entity.Library;
-import uz.pdp.library_management_system.request.LibraryRequest;
-import uz.pdp.library_management_system.response.LibraryResponse;
+import uz.pdp.library_management_system.dto.request.LibraryRequest;
+import uz.pdp.library_management_system.dto.response.LibraryResponse;
 
 @Component
 public class LibraryMapper {

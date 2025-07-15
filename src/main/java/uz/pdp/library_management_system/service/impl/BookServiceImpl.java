@@ -8,12 +8,12 @@ import uz.pdp.library_management_system.dto.ErrorDTO;
 import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Category;
-import uz.pdp.library_management_system.exception.ResourceNotFoundException;
+import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.BookMapper;
 import uz.pdp.library_management_system.repository.BookRepository;
 import uz.pdp.library_management_system.repository.CategoryRepository;
-import uz.pdp.library_management_system.request.BookRequest;
-import uz.pdp.library_management_system.response.BookResponse;
+import uz.pdp.library_management_system.dto.request.BookRequest;
+import uz.pdp.library_management_system.dto.response.BookResponse;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.service.BookService;
 import uz.pdp.library_management_system.util.validation.BookValidation;
@@ -42,7 +42,7 @@ public class BookServiceImpl implements BookService {
                     .build();
         }
         Category category = categoryRepository.findById(bookRequest.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found: " + bookRequest.getCategoryId()));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + bookRequest.getCategoryId()));
         Long authUserId = sessionId.getSessionId();
         if (!bookRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
@@ -67,7 +67,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public ResponseDTO<BookResponse> getBook(Long bookId) {
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + bookId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
         log.info("Book successfully found");
         return ResponseDTO.<BookResponse>builder()
                 .code(HttpStatus.OK.value())
@@ -92,7 +92,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public ResponseDTO<Void> updateBook(BookRequest bookRequest, Long bookId) {
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found: " + bookId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
         book.setTitle(bookRequest.getTitle());
         book.setAuthor(bookRequest.getAuthor());
         book.setTotalPages(bookRequest.getTotalPages());

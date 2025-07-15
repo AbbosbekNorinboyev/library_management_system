@@ -1,4 +1,4 @@
-package uz.pdp.library_management_system.response;
+package uz.pdp.library_management_system.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,12 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Data
-public class BookResponse {
+public class LibraryResponse {
     private Long id;
-    private String title;
-    private String author;
-    private Integer totalPages;
-    private Long availableCopies;
-    private Long categoryId;
+    private String name;
+    private String address;
+    private String phone;
+    private String email;
     private Long createdBy;
     private LocalDateTime createdAt;
     private Long updatedBy;

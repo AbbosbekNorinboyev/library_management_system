@@ -1,5 +1,9 @@
-package uz.pdp.library_management_system.response;
+package uz.pdp.library_management_system.dto.request;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,11 +16,14 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Data
-public class LibraryResponse {
-    private Long id;
+public class LibraryRequest {
+    @NotBlank(message = "name can not be null or empty")
     private String name;
+    @NotBlank(message = "address can not be null or empty")
     private String address;
+    @NotBlank(message = "phone can not be null or empty")
     private String phone;
+    @NotBlank(message = "email can not be null or empty")
     private String email;
     private Long createdBy;
     private LocalDateTime createdAt;

@@ -2,7 +2,7 @@ package uz.pdp.library_management_system.util.validation;
 
 import org.springframework.stereotype.Component;
 import uz.pdp.library_management_system.dto.ErrorDTO;
-import uz.pdp.library_management_system.request.LibraryRequest;
+import uz.pdp.library_management_system.dto.request.LibraryRequest;
 
 import java.util.ArrayList;
 import java.util.List;

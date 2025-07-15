@@ -2,6 +2,7 @@ package uz.pdp.library_management_system.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +14,7 @@ import uz.pdp.library_management_system.dto.LoginCreateDTO;
 import uz.pdp.library_management_system.dto.RegisterCreateDTO;
 import uz.pdp.library_management_system.entity.AuthUser;
 import uz.pdp.library_management_system.enums.Role;
-import uz.pdp.library_management_system.exception.CustomUserNotFoundException;
+import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.repository.AuthUserRepository;
 import uz.pdp.library_management_system.config.CustomUserDetailsService;
 import uz.pdp.library_management_system.util.JWTUtil;
@@ -59,7 +60,7 @@ public class AuthUserController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginCreateDTO loginCreateDTO) {
         AuthUser authUser = authUserRepository.findByUsername(loginCreateDTO.getUsername())
-                .orElseThrow(() -> new CustomUserNotFoundException("AuthUser not found by username: " + loginCreateDTO.getUsername()));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "AuthUser not found by username: " + loginCreateDTO.getUsername()));
         if (authUser.getUsername() == null) {
             return ResponseEntity.ok().body("Username not found");
         }
