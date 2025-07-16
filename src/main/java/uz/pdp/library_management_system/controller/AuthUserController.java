@@ -9,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.library_management_system.dto.ErrorDTO;
+import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.LoginCreateDTO;
 import uz.pdp.library_management_system.dto.RegisterCreateDTO;
 import uz.pdp.library_management_system.entity.AuthUser;
@@ -42,7 +42,7 @@ public class AuthUserController {
         if (byUsername.isPresent()) {
             return ResponseEntity.badRequest().body("Username already exists");
         }
-        List<ErrorDTO> errors = registerValidation.validate(registerCreateDTO);
+        List<ErrorResponse> errors = registerValidation.validate(registerCreateDTO);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body("Validation error");
         }

@@ -34,23 +34,14 @@ public class CategoryServiceImpl implements CategoryService {
         Long authUserId = sessionId.getSessionId();
         if (!categoryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.builder()
-                    .code(HttpStatus.NOT_FOUND.value())
-                    .message("AUthUser not found")
-                    .success(false)
-                    .build();
+            return Response.notFound("AuthUser not found");
         }
         Library library = libraryRepository.findById(categoryRequest.getLibraryId())
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + categoryRequest.getLibraryId()));
         category.setLibrary(library);
         categoryRepository.save(category);
         log.info("Category successfully created");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Category successfully created")
-                .success(true)
-                .data(categoryMapper.toResponse(category))
-                .build();
+        return Response.success(categoryMapper.toResponse(category), "Category successfully created");
     }
 
     @Override
@@ -58,24 +49,15 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         log.info("Category successfully found");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Category successfully found")
-                .success(true)
-                .data(categoryMapperInterface.toResponse(category))
-                .build();
+        return Response.success(categoryMapper.toResponse(category), "Category successfully found");
     }
 
     @Override
     public Response getAllCategory() {
         List<Category> categories = categoryRepository.findAll();
         log.info("Category list successfully found");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Category list successfully found")
-                .success(true)
-                .data(categories.stream().map(categoryMapper::toResponse).toList())
-                .build();
+        return Response.success(categories.stream().map(categoryMapper::toResponse).toList(),
+                "Categories successfully found");
     }
 
     @Override
@@ -88,19 +70,11 @@ public class CategoryServiceImpl implements CategoryService {
         Long authUserId = sessionId.getSessionId();
         if (!categoryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.builder()
-                    .code(HttpStatus.NOT_FOUND.value())
-                    .message("AUthUser not found")
-                    .success(false)
-                    .build();
+            return Response.notFound("AuthUser not found");
         }
         category.setUpdatedBy(categoryRequest.getUpdatedBy());
         categoryRepository.save(category);
         log.info("Category successfully updated");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Category successfully updated")
-                .success(true)
-                .build();
+        return Response.success(categoryMapper.toResponse(category), "Category successfully updated");
     }
 }

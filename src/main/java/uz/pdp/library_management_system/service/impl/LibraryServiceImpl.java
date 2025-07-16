@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
-import uz.pdp.library_management_system.dto.ErrorDTO;
-import uz.pdp.library_management_system.dto.request.LibraryRequest;
+import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.Response;
+import uz.pdp.library_management_system.dto.request.LibraryRequest;
 import uz.pdp.library_management_system.entity.Library;
 import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.LibraryMapper;
@@ -28,7 +28,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public Response createLibrary(LibraryRequest libraryRequest) {
-        List<ErrorDTO> errors = libraryValidation.validate(libraryRequest);
+        List<ErrorResponse> errors = libraryValidation.validate(libraryRequest);
         if (!errors.isEmpty()) {
             return Response.builder()
                     .code(HttpStatus.BAD_REQUEST.value())
@@ -40,21 +40,12 @@ public class LibraryServiceImpl implements LibraryService {
         Long authUserId = sessionId.getSessionId();
         if (!libraryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.builder()
-                    .code(HttpStatus.NOT_FOUND.value())
-                    .message("AuthUser not found")
-                    .success(false)
-                    .build();
+            return Response.notFound("AuthUser not found");
         }
         Library library = libraryMapper.toEntity(libraryRequest);
         libraryRepository.save(library);
         log.info("Library successfully created");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Library successfully created")
-                .success(true)
-                .data(libraryMapper.toResponse(library))
-                .build();
+        return Response.success(libraryMapper.toResponse(library), "Library successfully created");
     }
 
     @Override
@@ -62,24 +53,15 @@ public class LibraryServiceImpl implements LibraryService {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         log.info("Library successfully found");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Library successfully found")
-                .success(true)
-                .data(libraryMapper.toResponse(library))
-                .build();
+        return Response.success(libraryMapper.toResponse(library), "Library successfully found");
     }
 
     @Override
     public Response getAllLibrary() {
         List<Library> libraries = libraryRepository.findAll();
         log.info("Library list successfully found");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Library list successfully found")
-                .success(true)
-                .data(libraries.stream().map(libraryMapper::toResponse).toList())
-                .build();
+        return Response.success(libraries.stream().map(libraryMapper::toResponse).toList(),
+                "Library list successfully found");
     }
 
     @Override
@@ -92,21 +74,13 @@ public class LibraryServiceImpl implements LibraryService {
         Long authUserId = sessionId.getSessionId();
         if (!libraryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.builder()
-                    .code(HttpStatus.NOT_FOUND.value())
-                    .message("AUthUser not found")
-                    .success(false)
-                    .build();
+            return Response.notFound("AuthUser not found");
         }
         library.setCreatedBy(libraryRequest.getCreatedBy());
         library.setUpdatedBy(libraryRequest.getUpdatedBy());
         library.setUpdatedAt(libraryRequest.getUpdatedAt());
         libraryRepository.save(library);
         log.info("Library successfully updated");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Library successfully updated")
-                .success(true)
-                .build();
+        return Response.success(libraryMapper.toResponse(library), "Library successfully updated");
     }
 }

@@ -31,21 +31,12 @@ public class BorrowingServiceImpl implements BorrowingService {
         Long authUserId = sessionId.getSessionId();
         if (!borrowingRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.builder()
-                    .code(HttpStatus.NOT_FOUND.value())
-                    .message("AuthUser not found")
-                    .success(false)
-                    .build();
+            return Response.notFound("AuthUser not found");
         }
         Borrowing borrowing = borrowingMapper.toEntity(borrowingRequest);
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully created");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Borrowing successfully created")
-                .success(true)
-                .data(borrowingMapper.toResponse(borrowing))
-                .build();
+        return Response.success(borrowingMapper.toResponse(borrowing),"Book successfully created");
     }
 
     @Override
@@ -53,24 +44,16 @@ public class BorrowingServiceImpl implements BorrowingService {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         log.info("Borrowing successfully found");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Borrowing successfully found")
-                .success(true)
-                .data(borrowingMapper.toResponse(borrowing))
-                .build();
+        return Response.success(borrowingMapper.toResponse(borrowing),"Borrowing successfully found");
     }
 
     @Override
     public Response getAllBorrowing() {
         List<Borrowing> borrowings = borrowingRepository.findAll();
         log.info("Borrowing list successfully found");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Borrowing list successfully found")
-                .success(true)
-                .data(borrowings.stream().map(borrowingMapper::toResponse).toList())
-                .build();
+        return Response.success(
+                borrowings.stream().map(borrowingMapper::toResponse).toList(),
+                "Borrowing successfully found");
     }
 
     @Override
@@ -86,20 +69,12 @@ public class BorrowingServiceImpl implements BorrowingService {
         Long authUserId = sessionId.getSessionId();
         if (!borrowingRequest.getUpdatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.builder()
-                    .code(HttpStatus.NOT_FOUND.value())
-                    .message("AuthUser not found")
-                    .success(false)
-                    .build();
+            return Response.notFound("AuthUser not found");
         }
         borrowing.setUpdatedBy(borrowingRequest.getUpdatedBy());
         borrowing.setUpdatedAt(borrowingRequest.getUpdatedAt());
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully updated");
-        return Response.builder()
-                .code(HttpStatus.OK.value())
-                .message("Borrowing successfully updated")
-                .success(true)
-                .build();
+        return Response.success(borrowingMapper.toResponse(borrowing),"Borrowing successfully updated");
     }
 }
