@@ -1,4 +1,4 @@
-package uz.pdp.library_management_system.dto.response;
+package uz.pdp.library_management_system.dto;
 
 import com.fasterxml.jackson.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;

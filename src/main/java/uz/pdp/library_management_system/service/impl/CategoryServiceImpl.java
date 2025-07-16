@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
-import uz.pdp.library_management_system.dto.response.Response;
+import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.entity.Library;
 import uz.pdp.library_management_system.exception.CustomException;

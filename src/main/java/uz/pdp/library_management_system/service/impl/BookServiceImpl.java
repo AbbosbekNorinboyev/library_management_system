@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.ErrorDTO;
 import uz.pdp.library_management_system.dto.request.BookRequest;
-import uz.pdp.library_management_system.dto.response.Response;
+import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.exception.CustomException;

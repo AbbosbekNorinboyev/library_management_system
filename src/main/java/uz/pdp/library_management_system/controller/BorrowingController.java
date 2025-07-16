@@ -2,13 +2,9 @@ package uz.pdp.library_management_system.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.library_management_system.dto.ResponseDTO;
 import uz.pdp.library_management_system.dto.request.BorrowingRequest;
-import uz.pdp.library_management_system.dto.response.BorrowingResponse;
-import uz.pdp.library_management_system.dto.response.Response;
+import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.service.impl.BorrowingServiceImpl;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/borrowings")
@@ -33,7 +29,7 @@ public class BorrowingController {
 
     @PutMapping("/update/{borrowingId}")
     public Response updateBorrowing(@RequestBody BorrowingRequest borrowingRequest,
-                                             @PathVariable Long borrowingId) {
+                                    @PathVariable Long borrowingId) {
         return borrowingService.updateBorrowing(borrowingRequest, borrowingId);
     }
 }

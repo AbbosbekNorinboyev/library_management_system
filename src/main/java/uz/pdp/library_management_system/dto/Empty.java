@@ -1,4 +1,4 @@
-package uz.pdp.library_management_system.dto.response;
+package uz.pdp.library_management_system.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;

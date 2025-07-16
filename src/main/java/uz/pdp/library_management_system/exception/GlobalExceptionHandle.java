@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.pdp.library_management_system.dto.ErrorDTO;
 import uz.pdp.library_management_system.dto.ResponseDTO;
-import uz.pdp.library_management_system.dto.response.Empty;
-import uz.pdp.library_management_system.dto.response.ErrorResponse;
-import uz.pdp.library_management_system.dto.response.Response;
+import uz.pdp.library_management_system.dto.Empty;
+import uz.pdp.library_management_system.dto.ErrorResponse;
+import uz.pdp.library_management_system.dto.Response;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class GlobalExceptionHandle {
         var response = Response.builder()
                 .success(false)
                 .error(errorResponse)
-                .done(Empty.builder().build())
+                .data(Empty.builder().build())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class GlobalExceptionHandle {
         var response = Response.builder()
                 .success(false)
                 .error(errorResponse)
-                .done(Empty.builder().build())
+                .data(Empty.builder().build())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -82,7 +82,7 @@ public class GlobalExceptionHandle {
         var response = Response.builder()
                 .success(false)
                 .error(errorResponse)
-                .done(Empty.builder().build())
+                .data(Empty.builder().build())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -97,7 +97,7 @@ public class GlobalExceptionHandle {
         var response = Response.builder()
                 .success(false)
                 .error(errorResponse)
-                .done(Empty.builder().build())
+                .data(Empty.builder().build())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -112,7 +112,7 @@ public class GlobalExceptionHandle {
         var response = Response.builder()
                 .success(false)
                 .error(errorResponse)
-                .done(Empty.builder().build())
+                .data(Empty.builder().build())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -127,7 +127,7 @@ public class GlobalExceptionHandle {
         var response = Response.builder()
                 .success(false)
                 .error(errorResponse)
-                .done(Empty.builder().build())
+                .data(Empty.builder().build())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
