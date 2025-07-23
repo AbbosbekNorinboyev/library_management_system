@@ -11,4 +11,6 @@ public interface BookService {
     Response getAllBook();
 
     Response updateBook(BookRequest bookRequest, Long bookId);
+
+    Response getBookByCategoryId(Long categoryId);
 }

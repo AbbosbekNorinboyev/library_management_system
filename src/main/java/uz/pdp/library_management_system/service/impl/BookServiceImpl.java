@@ -90,4 +90,13 @@ public class BookServiceImpl implements BookService {
         log.info("Book successfully updated");
         return Response.success(bookMapper.toResponse(book), "Book successfully updated");
     }
+
+    @Override
+    public Response getBookByCategoryId(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
+        List<Book> allByCategoryId = bookRepository.findAllByCategoryId(category.getId());
+        return Response.success(allByCategoryId.stream().map(bookMapper::toResponse).toList(),
+                "Books successfully found");
+    }
 }

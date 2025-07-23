@@ -17,19 +17,24 @@ public class BookController {
         return bookService.createBook(bookRequest);
     }
 
-    @GetMapping("/{bookId}")
-    public Response getBook(@PathVariable Long bookId) {
+    @GetMapping("/get")
+    public Response getBook(@RequestParam("bookId") Long bookId) {
         return bookService.getBook(bookId);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public Response getAllBook() {
         return bookService.getAllBook();
     }
 
-    @PutMapping("/update/{bookId}")
+    @PutMapping("/update")
     public Response updateBook(@RequestBody BookRequest bookRequest,
-                               @PathVariable Long bookId) {
+                               @RequestParam("bookId") Long bookId) {
         return bookService.updateBook(bookRequest, bookId);
+    }
+
+    @GetMapping("/getBookByCategoryId")
+    public Response getBookByCategoryId(@RequestParam("categoryId") Long categoryId) {
+        return bookService.getBookByCategoryId(categoryId);
     }
 }
