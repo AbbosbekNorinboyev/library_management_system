@@ -10,6 +10,7 @@ import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.LibraryRequest;
+import uz.pdp.library_management_system.dto.response.LibraryResponse;
 import uz.pdp.library_management_system.entity.Library;
 import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.LibraryMapper;
@@ -60,10 +61,10 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public Response getAllLibrary(Pageable pageable) {
-        Page<Library> libraries = libraryRepository.findAll(pageable);
+        Page<LibraryResponse> libraries = libraryRepository.findAll(pageable)
+                .map(libraryMapper::toResponse);
         log.info("Library list successfully found");
-        return Response.success(libraries.stream().map(libraryMapper::toResponse).toList(),
-                "Library list successfully found");
+        return Response.success(libraries, "Library list successfully found");
     }
 
     @Override

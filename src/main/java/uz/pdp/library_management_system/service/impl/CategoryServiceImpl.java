@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
 import uz.pdp.library_management_system.dto.Response;
+import uz.pdp.library_management_system.dto.response.CategoryResponse;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.entity.Library;
 import uz.pdp.library_management_system.exception.CustomException;
@@ -56,10 +57,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Response getAllCategory(Pageable pageable) {
-        Page<Category> categories = categoryRepository.findAll(pageable);
+        Page<CategoryResponse> categories = categoryRepository.findAll(pageable)
+                .map(categoryMapper::toResponse);
         log.info("Category list successfully found");
-        return Response.success(categories.stream().map(categoryMapper::toResponse).toList(),
-                "Categories successfully found");
+        return Response.success(categories, "Categories successfully found");
     }
 
     @Override

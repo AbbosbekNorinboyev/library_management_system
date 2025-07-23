@@ -10,6 +10,7 @@ import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.Response;
+import uz.pdp.library_management_system.dto.response.BookResponse;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.exception.CustomException;
@@ -66,10 +67,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Response getAllBook(Pageable pageable) {
-        Page<Book> books = bookRepository.findAll(pageable);
+        Page<BookResponse> books = bookRepository.findAll(pageable)
+                .map(bookMapper::toResponse);
         log.info("Book list successfully found");
-        return Response.success(books.stream().map(bookMapper::toResponse).toList(),
-                "Books successfully found");
+        return Response.success(books, "Books successfully found");
     }
 
     @Override

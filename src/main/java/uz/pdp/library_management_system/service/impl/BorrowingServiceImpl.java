@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.request.BorrowingRequest;
 import uz.pdp.library_management_system.dto.Response;
+import uz.pdp.library_management_system.dto.response.BorrowingResponse;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Borrowing;
 import uz.pdp.library_management_system.exception.CustomException;
@@ -38,7 +39,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         Borrowing borrowing = borrowingMapper.toEntity(borrowingRequest);
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully created");
-        return Response.success(borrowingMapper.toResponse(borrowing),"Book successfully created");
+        return Response.success(borrowingMapper.toResponse(borrowing), "Book successfully created");
     }
 
     @Override
@@ -46,16 +47,15 @@ public class BorrowingServiceImpl implements BorrowingService {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         log.info("Borrowing successfully found");
-        return Response.success(borrowingMapper.toResponse(borrowing),"Borrowing successfully found");
+        return Response.success(borrowingMapper.toResponse(borrowing), "Borrowing successfully found");
     }
 
     @Override
     public Response getAllBorrowing(Pageable pageable) {
-        Page<Borrowing> borrowings = borrowingRepository.findAll(pageable);
+        Page<BorrowingResponse> borrowings = borrowingRepository.findAll(pageable)
+                .map(borrowingMapper::toResponse);
         log.info("Borrowing list successfully found");
-        return Response.success(
-                borrowings.stream().map(borrowingMapper::toResponse).toList(),
-                "Borrowing successfully found");
+        return Response.success(borrowings, "Borrowing successfully found");
     }
 
     @Override
@@ -77,6 +77,6 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setUpdatedAt(borrowingRequest.getUpdatedAt());
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully updated");
-        return Response.success(borrowingMapper.toResponse(borrowing),"Borrowing successfully updated");
+        return Response.success(borrowingMapper.toResponse(borrowing), "Borrowing successfully updated");
     }
 }
