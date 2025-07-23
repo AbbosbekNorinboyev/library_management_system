@@ -2,15 +2,15 @@ package uz.pdp.library_management_system.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.library_management_system.dto.request.BorrowingRequest;
 import uz.pdp.library_management_system.dto.Response;
-import uz.pdp.library_management_system.service.impl.BorrowingServiceImpl;
+import uz.pdp.library_management_system.dto.request.BorrowingRequest;
+import uz.pdp.library_management_system.service.BorrowingService;
 
 @RestController
 @RequestMapping("/api/borrowings")
 @RequiredArgsConstructor
 public class BorrowingController {
-    private final BorrowingServiceImpl borrowingService;
+    private final BorrowingService borrowingService;
 
     @PostMapping("/create")
     public Response createBorrowing(@RequestBody BorrowingRequest borrowingRequest) {

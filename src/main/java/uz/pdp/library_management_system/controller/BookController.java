@@ -2,15 +2,15 @@ package uz.pdp.library_management_system.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.Response;
-import uz.pdp.library_management_system.service.impl.BookServiceImpl;
+import uz.pdp.library_management_system.dto.request.BookRequest;
+import uz.pdp.library_management_system.service.BookService;
 
 @RestController
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
 public class BookController {
-    private final BookServiceImpl bookService;
+    private final BookService bookService;
 
     @PostMapping("/create")
     public Response createBook(@RequestBody BookRequest bookRequest) {

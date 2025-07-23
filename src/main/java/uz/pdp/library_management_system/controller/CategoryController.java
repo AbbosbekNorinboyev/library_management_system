@@ -3,15 +3,15 @@ package uz.pdp.library_management_system.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.library_management_system.dto.request.CategoryRequest;
 import uz.pdp.library_management_system.dto.Response;
-import uz.pdp.library_management_system.service.impl.CategoryServiceImpl;
+import uz.pdp.library_management_system.dto.request.CategoryRequest;
+import uz.pdp.library_management_system.service.CategoryService;
 
 @RestController
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
 public class CategoryController {
-    private final CategoryServiceImpl categoryService;
+    private final CategoryService categoryService;
 
     @PostMapping("/create")
     public Response createCategory(@RequestBody @Valid CategoryRequest categoryRequest) {
