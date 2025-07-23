@@ -77,4 +77,13 @@ public class CategoryServiceImpl implements CategoryService {
         log.info("Category successfully updated");
         return Response.success(categoryMapper.toResponse(category), "Category successfully updated");
     }
+
+    @Override
+    public Response getCategoryByLibraryId(Long libraryId) {
+        Library library = libraryRepository.findById(libraryId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
+        List<Category> allByLibraryId = categoryRepository.findAllByLibraryId(library.getId());
+        return Response.success(allByLibraryId.stream().map(categoryMapper::toResponse).toList(),
+                "Categories successfully found by libraryId");
+    }
 }

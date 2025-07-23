@@ -47,12 +47,9 @@ public class SecurityConfig {
                                     "/webjars/**")
                             .permitAll()
                             .requestMatchers(
-                                    "/api/categories/create",
-                                    "/api/categories/update",
-                                    "/api/libraries/create",
-                                    "/api/libraries/update",
-                                    "/api/books/create",
-                                    "/api/books/update").hasRole("ADMIN")
+                                    "/api/categories/**",
+                                    "/api/libraries/**",
+                                    "/api/books/**").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 })
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)

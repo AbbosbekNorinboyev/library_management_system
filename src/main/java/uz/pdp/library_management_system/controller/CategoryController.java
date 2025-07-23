@@ -18,19 +18,24 @@ public class CategoryController {
         return categoryService.createCategory(categoryRequest);
     }
 
-    @GetMapping("/{categoryId}")
-    public Response getCategory(@PathVariable Long categoryId) {
+    @GetMapping("/get")
+    public Response getCategory(@RequestParam("categoryId") Long categoryId) {
         return categoryService.getCategory(categoryId);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public Response getAllResponse() {
         return categoryService.getAllCategory();
     }
 
-    @PutMapping("/update/{categoryId}")
+    @PutMapping("/update")
     public Response updateCategory(@RequestBody @Valid CategoryRequest categoryRequest,
-                                   @PathVariable Long categoryId) {
+                                   @RequestParam("categoryId") Long categoryId) {
         return categoryService.updateCategory(categoryRequest, categoryId);
+    }
+
+    @GetMapping("/getCategoryByLibraryId")
+    public Response getCategoryByLibraryId(@RequestParam("libraryId") Long libraryId) {
+        return categoryService.getCategoryByLibraryId(libraryId);
     }
 }

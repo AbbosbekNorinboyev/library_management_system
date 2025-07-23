@@ -97,6 +97,6 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         List<Book> allByCategoryId = bookRepository.findAllByCategoryId(category.getId());
         return Response.success(allByCategoryId.stream().map(bookMapper::toResponse).toList(),
-                "Books successfully found");
+                "Books successfully found by categoryId");
     }
 }

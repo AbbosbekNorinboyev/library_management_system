@@ -11,4 +11,6 @@ public interface CategoryService {
     Response getAllCategory();
 
     Response updateCategory(CategoryRequest categoryRequest, Long categoryId);
+
+    Response getCategoryByLibraryId(Long libraryId);
 }
