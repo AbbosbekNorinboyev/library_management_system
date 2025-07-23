@@ -1,6 +1,7 @@
 package uz.pdp.library_management_system.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.BorrowingRequest;
@@ -17,19 +18,20 @@ public class BorrowingController {
         return borrowingService.createBorrowing(borrowingRequest);
     }
 
-    @GetMapping("/{borrowingId}")
-    public Response getBorrowing(@PathVariable Long borrowingId) {
+    @GetMapping("/get")
+    public Response getBorrowing(@RequestParam("borrowingId") Long borrowingId) {
         return borrowingService.getBorrowing(borrowingId);
     }
 
-    @GetMapping
-    public Response getAllBorrowing() {
-        return borrowingService.getAllBorrowing();
+    @GetMapping("/getAll")
+    public Response getAllBorrowing(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                    @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
+        return borrowingService.getAllBorrowing(PageRequest.of(page, size));
     }
 
-    @PutMapping("/update/{borrowingId}")
+    @PutMapping("/update")
     public Response updateBorrowing(@RequestBody BorrowingRequest borrowingRequest,
-                                    @PathVariable Long borrowingId) {
+                                    @RequestParam("borrowingId") Long borrowingId) {
         return borrowingService.updateBorrowing(borrowingRequest, borrowingId);
     }
 }

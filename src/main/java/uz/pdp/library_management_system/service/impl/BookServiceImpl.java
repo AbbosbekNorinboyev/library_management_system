@@ -2,6 +2,8 @@ package uz.pdp.library_management_system.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
@@ -39,7 +41,6 @@ public class BookServiceImpl implements BookService {
                     .success(false)
                     .error(errors)
                     .build();
-//            return Response.error("Book validation error");
         }
         Category category = categoryRepository.findById(bookRequest.getCategoryId())
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + bookRequest.getCategoryId()));
@@ -64,8 +65,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Response getAllBook() {
-        List<Book> books = bookRepository.findAll();
+    public Response getAllBook(Pageable pageable) {
+        Page<Book> books = bookRepository.findAll(pageable);
         log.info("Book list successfully found");
         return Response.success(books.stream().map(bookMapper::toResponse).toList(),
                 "Books successfully found");

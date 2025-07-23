@@ -2,6 +2,8 @@ package uz.pdp.library_management_system.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
@@ -48,8 +50,8 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
-    public Response getAllBorrowing() {
-        List<Borrowing> borrowings = borrowingRepository.findAll();
+    public Response getAllBorrowing(Pageable pageable) {
+        Page<Borrowing> borrowings = borrowingRepository.findAll(pageable);
         log.info("Borrowing list successfully found");
         return Response.success(
                 borrowings.stream().map(borrowingMapper::toResponse).toList(),

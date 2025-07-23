@@ -2,6 +2,8 @@ package uz.pdp.library_management_system.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
@@ -53,8 +55,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Response getAllCategory() {
-        List<Category> categories = categoryRepository.findAll();
+    public Response getAllCategory(Pageable pageable) {
+        Page<Category> categories = categoryRepository.findAll(pageable);
         log.info("Category list successfully found");
         return Response.success(categories.stream().map(categoryMapper::toResponse).toList(),
                 "Categories successfully found");

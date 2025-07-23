@@ -2,6 +2,7 @@ package uz.pdp.library_management_system.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
@@ -24,8 +25,9 @@ public class CategoryController {
     }
 
     @GetMapping("/getAll")
-    public Response getAllResponse() {
-        return categoryService.getAllCategory();
+    public Response getAllResponse(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                   @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
+        return categoryService.getAllCategory(PageRequest.of(page, size));
     }
 
     @PutMapping("/update")

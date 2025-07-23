@@ -2,6 +2,8 @@ package uz.pdp.library_management_system.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
@@ -57,8 +59,8 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public Response getAllLibrary() {
-        List<Library> libraries = libraryRepository.findAll();
+    public Response getAllLibrary(Pageable pageable) {
+        Page<Library> libraries = libraryRepository.findAll(pageable);
         log.info("Library list successfully found");
         return Response.success(libraries.stream().map(libraryMapper::toResponse).toList(),
                 "Library list successfully found");

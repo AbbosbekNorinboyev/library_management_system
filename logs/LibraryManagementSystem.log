@@ -1,6 +1,5 @@
-2025-07-23 10:03:59 [scheduling-1] INFO  u.p.l.cron.LogCleanup - ✅ Log fayli tozalandi: C:\Abbos\Spring Project\Test Projects\LibraryManagementSystem\logs\LibraryManagementSystem.log
-2025-07-23 10:04:12 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2025-07-23 10:04:13 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
-2025-07-23 10:04:13 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-07-23 10:04:13 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2025-07-23 10:04:13 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-07-23 10:30:48 [scheduling-1] INFO  u.p.l.cron.LogCleanup - ✅ Log fayli tozalandi: C:\Abbos\Spring Project\Test Projects\LibraryManagementSystem\logs\LibraryManagementSystem.log
+2025-07-23 10:30:48 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-07-23 10:30:48 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-23 10:30:48 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-07-23 10:30:48 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
