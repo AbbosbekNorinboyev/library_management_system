@@ -71,9 +71,7 @@ public class LibraryServiceImpl implements LibraryService {
     public Response updateLibrary(LibraryRequest libraryRequest, Long libraryId) {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
-        library.setName(libraryRequest.getName());
-        library.setAddress(libraryRequest.getAddress());
-        library.setEmail(libraryRequest.getEmail());
+        libraryMapper.update(library, libraryRequest);
         Long authUserId = sessionId.getSessionId();
         if (!libraryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");

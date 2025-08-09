@@ -1,9 +1,9 @@
 package uz.pdp.library_management_system.mapper;
 
 import org.springframework.stereotype.Component;
-import uz.pdp.library_management_system.entity.Library;
 import uz.pdp.library_management_system.dto.request.LibraryRequest;
 import uz.pdp.library_management_system.dto.response.LibraryResponse;
+import uz.pdp.library_management_system.entity.Library;
 
 @Component
 public class LibraryMapper {
@@ -32,5 +32,20 @@ public class LibraryMapper {
                 .updatedBy(library.getUpdatedBy())
                 .updatedAt(library.getUpdatedAt())
                 .build();
+    }
+
+    public void update(Library entity, LibraryRequest request) {
+        if (request == null) {
+            return;
+        }
+        if (request.getName() != null && request.getName().trim().isEmpty()) {
+            entity.setName(request.getName());
+        }
+        if (request.getAddress() != null && request.getAddress().trim().isEmpty()) {
+            entity.setAddress(request.getAddress());
+        }
+        if (request.getEmail() != null && request.getEmail().trim().isEmpty()) {
+            entity.setEmail(request.getEmail());
+        }
     }
 }

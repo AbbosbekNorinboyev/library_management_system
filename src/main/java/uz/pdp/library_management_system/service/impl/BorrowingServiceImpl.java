@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
-import uz.pdp.library_management_system.dto.request.BorrowingRequest;
 import uz.pdp.library_management_system.dto.Response;
+import uz.pdp.library_management_system.dto.request.BorrowingRequest;
 import uz.pdp.library_management_system.dto.response.BorrowingResponse;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Borrowing;
@@ -18,7 +18,7 @@ import uz.pdp.library_management_system.repository.BookRepository;
 import uz.pdp.library_management_system.repository.BorrowingRepository;
 import uz.pdp.library_management_system.service.BorrowingService;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +36,10 @@ public class BorrowingServiceImpl implements BorrowingService {
             log.error("AuthUser not found");
             return Response.notFound("AuthUser not found");
         }
+        Book book = bookRepository.findById(borrowingRequest.getBookId())
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + borrowingRequest.getBookId()));
         Borrowing borrowing = borrowingMapper.toEntity(borrowingRequest);
+        borrowing.setBook(book);
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully created");
         return Response.success(borrowingMapper.toResponse(borrowing), "Book successfully created");
@@ -65,9 +68,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         Book book = bookRepository.findById(borrowingRequest.getBookId())
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + borrowingRequest.getBookId()));
         borrowing.setBook(book);
-        borrowing.setBorrowDate(borrowingRequest.getBorrowDate());
-        borrowing.setDueDate(borrowingRequest.getDueDate());
-        borrowing.setReturnDate(borrowingRequest.getReturnDate());
+        borrowingMapper.update(borrowing, borrowingRequest);
         Long authUserId = sessionId.getSessionId();
         if (!borrowingRequest.getUpdatedBy().equals(authUserId)) {
             log.error("AuthUser not found");

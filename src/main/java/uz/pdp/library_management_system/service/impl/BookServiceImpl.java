@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.ErrorResponse;
-import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.Response;
+import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.response.BookResponse;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Category;
@@ -77,10 +77,7 @@ public class BookServiceImpl implements BookService {
     public Response updateBook(BookRequest bookRequest, Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
-        book.setTitle(bookRequest.getTitle());
-        book.setAuthor(bookRequest.getAuthor());
-        book.setTotalPages(bookRequest.getTotalPages());
-        book.setAvailableCopies(bookRequest.getAvailableCopies());
+        bookMapper.update(book, bookRequest);
         Long authUserId = sessionId.getSessionId();
         if (!bookRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");

@@ -10,7 +10,6 @@ import uz.pdp.library_management_system.repository.AuthUserRepository;
 @Component
 @RequiredArgsConstructor
 public class SessionId {
-
     private final AuthUserRepository authUserRepository;
 
     public Long getSessionId() {
