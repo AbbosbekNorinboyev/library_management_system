@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
@@ -17,6 +18,7 @@ import uz.pdp.library_management_system.mapper.CategoryMapper;
 import uz.pdp.library_management_system.repository.CategoryRepository;
 import uz.pdp.library_management_system.repository.LibraryRepository;
 import uz.pdp.library_management_system.service.CategoryService;
+import uz.pdp.library_management_system.specification.CategorySpecification;
 
 import java.util.List;
 
@@ -85,5 +87,18 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> allByLibraryId = categoryRepository.findAllByLibraryId(library.getId());
         return Response.success(allByLibraryId.stream().map(categoryMapper::toResponse).toList(),
                 "Categories successfully found by libraryId");
+    }
+
+    @Override
+    public Response search(String name, String description) {
+        Specification<Category> specification = Specification.where(null);
+        if (name != null && !name.isEmpty()) {
+            specification = specification.and(CategorySpecification.hasName(name));
+        }
+        if (description != null && !description.isEmpty()) {
+            specification = specification.and(CategorySpecification.hasDescription(description));
+        }
+
+        return Response.success(categoryRepository.findAll(specification), "Category specification");
     }
 }

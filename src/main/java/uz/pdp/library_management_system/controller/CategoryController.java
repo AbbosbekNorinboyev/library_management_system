@@ -40,4 +40,10 @@ public class CategoryController {
     public Response getCategoryByLibraryId(@RequestParam("libraryId") Long libraryId) {
         return categoryService.getCategoryByLibraryId(libraryId);
     }
+
+    @GetMapping("/search")
+    public Response search(@RequestParam(required = false) String name,
+                           @RequestParam(required = false) String description) {
+        return categoryService.search(name, description);
+    }
 }

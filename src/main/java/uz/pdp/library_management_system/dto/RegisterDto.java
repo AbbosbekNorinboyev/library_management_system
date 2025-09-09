@@ -9,9 +9,13 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class LoginCreateDTO {
+public class RegisterDto {
     @NotBlank(message = "username can not be null or empty")
     private String username;
     @NotBlank(message = "password can not be null or empty")
     private String password;
+    @NotBlank(message = "fullName can not be null or empty")
+    private String fullName;
+    @NotBlank(message = "phoneNumber can not be null or empty")
+    private String phoneNumber;
 }

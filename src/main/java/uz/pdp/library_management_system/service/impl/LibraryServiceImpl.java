@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
-import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.LibraryRequest;
 import uz.pdp.library_management_system.dto.response.LibraryResponse;
@@ -16,9 +15,6 @@ import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.LibraryMapper;
 import uz.pdp.library_management_system.repository.LibraryRepository;
 import uz.pdp.library_management_system.service.LibraryService;
-import uz.pdp.library_management_system.util.validation.LibraryValidation;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,20 +22,10 @@ import java.util.List;
 public class LibraryServiceImpl implements LibraryService {
     private final LibraryMapper libraryMapper;
     private final LibraryRepository libraryRepository;
-    private final LibraryValidation libraryValidation;
     private final SessionId sessionId;
 
     @Override
     public Response createLibrary(LibraryRequest libraryRequest) {
-        List<ErrorResponse> errors = libraryValidation.validate(libraryRequest);
-        if (!errors.isEmpty()) {
-            return Response.builder()
-                    .code(HttpStatus.BAD_REQUEST.value())
-                    .message("Library validation error")
-                    .success(false)
-                    .error(errors)
-                    .build();
-        }
         Long authUserId = sessionId.getSessionId();
         if (!libraryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");

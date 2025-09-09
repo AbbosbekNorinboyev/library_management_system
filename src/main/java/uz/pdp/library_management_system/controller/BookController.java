@@ -39,4 +39,12 @@ public class BookController {
     public Response getBookByCategoryId(@RequestParam("categoryId") Long categoryId) {
         return bookService.getBookByCategoryId(categoryId);
     }
+
+    @GetMapping("/search")
+    public Response search(@RequestParam(required = false) String title,
+                           @RequestParam(required = false) String author,
+                           @RequestParam(required = false) Integer totalPages,
+                           @RequestParam(required = false) Long availableCopies) {
+        return bookService.search(title, author, totalPages, availableCopies);
+    }
 }
