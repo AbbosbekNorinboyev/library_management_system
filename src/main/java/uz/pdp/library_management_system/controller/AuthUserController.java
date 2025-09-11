@@ -20,6 +20,7 @@ import uz.pdp.library_management_system.util.JWTUtil;
 import java.util.Optional;
 
 import static uz.pdp.library_management_system.util.PasswordHasher.hashPassword;
+import static uz.pdp.library_management_system.util.PasswordValidator.validatePassword;
 
 @RestController
 @RequestMapping("/api/auths")
@@ -53,7 +54,10 @@ public class AuthUserController {
         AuthUser authUser = authUserRepository.findByUsername(loginDto.getUsername())
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "AuthUser not found by username: " + loginDto.getUsername()));
         if (authUser.getUsername() == null) {
-            return ResponseEntity.ok().body("Username not found");
+            return ResponseEntity.badRequest().body("Username not found");
+        }
+        if (!validatePassword(loginDto.getPassword(), authUser.getPassword())) {
+            return ResponseEntity.badRequest().body("Invalid password");
         }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
