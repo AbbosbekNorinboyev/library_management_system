@@ -47,7 +47,8 @@ public class SecurityConfig {
                                     "/webjars/**",
                                     "/api/categories/**",
                                     "/api/libraries/**",
-                                    "/api/books/**")
+                                    "/api/books/**",
+                                    "/actuator/**")
                             .permitAll()
                             .anyRequest().authenticated();
                 })
