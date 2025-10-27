@@ -1,0 +1,2 @@
+2025-10-21 12:36:59 [scheduling-1] INFO  u.p.l.cron.LogCleanup - ✅ Log fayli tozalandi: C:\Abbos\Spring Project\Test Projects\LibraryManagementSystem\logs\LibraryManagementSystem.log
+2025-10-21 12:37:29 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
