@@ -1,8 +1,8 @@
 package uz.pdp.library_management_system.service;
 
 import org.springframework.data.domain.Pageable;
-import uz.pdp.library_management_system.dto.request.LibraryRequest;
 import uz.pdp.library_management_system.dto.Response;
+import uz.pdp.library_management_system.dto.request.LibraryRequest;
 
 public interface LibraryService {
     Response createLibrary(LibraryRequest libraryRequest);

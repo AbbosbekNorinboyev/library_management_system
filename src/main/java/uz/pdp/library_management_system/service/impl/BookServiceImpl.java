@@ -8,7 +8,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
-import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.response.BookResponse;
