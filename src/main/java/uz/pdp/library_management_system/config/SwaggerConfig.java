@@ -12,12 +12,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(
+                title = "LIBRARY MANAGEMENT SYSTEM",
                 version = "2.6.0",
-                description = "API Documentation"
+                description = "LIBRARY MANAGEMENT SYSTEM API Documentation"
         ),
         servers = {
                 @Server(url = "http://localhost:3344", description = "Local Server"),
-
         },
         security = @SecurityRequirement(name = "bearerAuth") // Apply globally
 )
