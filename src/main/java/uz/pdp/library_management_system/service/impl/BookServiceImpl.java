@@ -91,7 +91,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Response search(String title, String author, Integer totalPages, Long availableCopies) {
-        Specification<Book> specification = Specification.where(null);
+        Specification<Book> specification = (root, query, criteriaBuilder) -> null;
         if (title != null && !title.isEmpty()) {
             specification = specification.and(BookSpecification.hasTitle(title));
         }

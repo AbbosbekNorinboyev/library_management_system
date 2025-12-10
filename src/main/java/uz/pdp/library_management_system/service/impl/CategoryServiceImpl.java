@@ -91,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Response search(String name, String description) {
-        Specification<Category> specification = Specification.where(null);
+        Specification<Category> specification = (root, query, criteriaBuilder) -> null;
         if (name != null && !name.isEmpty()) {
             specification = specification.and(CategorySpecification.hasName(name));
         }
