@@ -50,11 +50,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Response getBook(Long bookId) {
+    public ResponseEntity<?> getBook(Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
         log.info("Book successfully found");
-        return Response.success(bookMapper.toResponse(book));
+        var response = Response.builder()
+                .success(true)
+                .data(bookMapper.toResponse(book))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -88,11 +93,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Response getBookByCategoryId(Long categoryId) {
+    public ResponseEntity<?> getBookByCategoryId(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         List<Book> allByCategoryId = bookRepository.findAllByCategoryId(category.getId());
-        return Response.success(allByCategoryId.stream().map(bookMapper::toResponse).toList());
+        var response = Response.builder()
+                .success(true)
+                .data(allByCategoryId.stream().map(bookMapper::toResponse).toList())
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override

@@ -40,11 +40,16 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public Response getLibrary(Long libraryId) {
+    public ResponseEntity<?> getLibrary(Long libraryId) {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         log.info("Library successfully found");
-        return Response.success(libraryMapper.toResponse(library));
+        var response = Response.builder()
+                .success(true)
+                .data(libraryMapper.toResponse(library))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override

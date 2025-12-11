@@ -119,7 +119,7 @@ public class GlobalExceptionHandle {
     public ResponseEntity<?> handleGeneralCustomExceptions(CustomException customException) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .code(customException.getCode())
-                .message("Something wrong -> " + customException.getMessage())
+                .message(customException.getMessage())
                 .build();
 
         var response = Response.builder()

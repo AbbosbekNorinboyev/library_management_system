@@ -46,11 +46,16 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
-    public Response getBorrowing(Long borrowingId) {
+    public ResponseEntity<?> getBorrowing(Long borrowingId) {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         log.info("Borrowing successfully found");
-        return Response.success(borrowingMapper.toResponse(borrowing));
+        var response = Response.builder()
+                .success(true)
+                .data(borrowingMapper.toResponse(borrowing))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override

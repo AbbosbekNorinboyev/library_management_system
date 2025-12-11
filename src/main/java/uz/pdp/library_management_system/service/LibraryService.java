@@ -8,7 +8,7 @@ import uz.pdp.library_management_system.dto.request.LibraryRequest;
 public interface LibraryService {
     Response createLibrary(LibraryRequest libraryRequest);
 
-    Response getLibrary(Long libraryId);
+    ResponseEntity<?> getLibrary(Long libraryId);
 
     ResponseEntity<?> getAllLibrary(Pageable pageable);
 

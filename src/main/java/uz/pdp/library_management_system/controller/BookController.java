@@ -20,7 +20,7 @@ public class BookController {
     }
 
     @GetMapping("/get")
-    public Response getBook(@RequestParam("bookId") Long bookId) {
+    public ResponseEntity<?> getBook(@RequestParam("bookId") Long bookId) {
         return bookService.getBook(bookId);
     }
 
@@ -37,7 +37,7 @@ public class BookController {
     }
 
     @GetMapping("/getBookByCategoryId")
-    public Response getBookByCategoryId(@RequestParam("categoryId") Long categoryId) {
+    public ResponseEntity<?> getBookByCategoryId(@RequestParam("categoryId") Long categoryId) {
         return bookService.getBookByCategoryId(categoryId);
     }
 

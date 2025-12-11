@@ -20,7 +20,7 @@ public class LibraryController {
     }
 
     @GetMapping("/get")
-    public Response getLibrary(@RequestParam("libraryId") Long libraryId) {
+    public ResponseEntity<?> getLibrary(@RequestParam("libraryId") Long libraryId) {
         return libraryService.getLibrary(libraryId);
     }
 

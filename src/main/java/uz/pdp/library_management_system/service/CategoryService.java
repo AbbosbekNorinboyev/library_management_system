@@ -8,7 +8,7 @@ import uz.pdp.library_management_system.dto.request.CategoryRequest;
 public interface CategoryService {
     Response createCategory(CategoryRequest categoryRequest);
 
-    Response getCategory(Long categoryId);
+    ResponseEntity<?> getCategory(Long categoryId);
 
     ResponseEntity<?> getAllCategory(Pageable pageable);
 

@@ -20,7 +20,7 @@ public class BorrowingController {
     }
 
     @GetMapping("/get")
-    public Response getBorrowing(@RequestParam("borrowingId") Long borrowingId) {
+    public ResponseEntity<?> getBorrowing(@RequestParam("borrowingId") Long borrowingId) {
         return borrowingService.getBorrowing(borrowingId);
     }
 

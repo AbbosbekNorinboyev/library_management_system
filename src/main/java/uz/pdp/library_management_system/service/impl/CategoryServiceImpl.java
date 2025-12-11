@@ -50,11 +50,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Response getCategory(Long categoryId) {
+    public ResponseEntity<?> getCategory(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         log.info("Category successfully found");
-        return Response.success(categoryMapper.toResponse(category));
+        var response = Response.builder()
+                .success(true)
+                .data(categoryMapper.toResponse(category))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
