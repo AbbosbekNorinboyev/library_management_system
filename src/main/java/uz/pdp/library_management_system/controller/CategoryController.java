@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
 import uz.pdp.library_management_system.service.CategoryService;
 
@@ -16,7 +15,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("/create")
-    public Response createCategory(@RequestBody @Valid CategoryRequest categoryRequest) {
+    public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryRequest categoryRequest) {
         return categoryService.createCategory(categoryRequest);
     }
 
@@ -32,19 +31,19 @@ public class CategoryController {
     }
 
     @PutMapping("/update")
-    public Response updateCategory(@RequestBody @Valid CategoryRequest categoryRequest,
-                                   @RequestParam("categoryId") Long categoryId) {
+    public ResponseEntity<?> updateCategory(@RequestBody @Valid CategoryRequest categoryRequest,
+                                            @RequestParam("categoryId") Long categoryId) {
         return categoryService.updateCategory(categoryRequest, categoryId);
     }
 
     @GetMapping("/getCategoryByLibraryId")
-    public Response getCategoryByLibraryId(@RequestParam("libraryId") Long libraryId) {
+    public ResponseEntity<?> getCategoryByLibraryId(@RequestParam("libraryId") Long libraryId) {
         return categoryService.getCategoryByLibraryId(libraryId);
     }
 
     @GetMapping("/search")
-    public Response search(@RequestParam(required = false) String name,
-                           @RequestParam(required = false) String description) {
+    public ResponseEntity<?> search(@RequestParam(required = false) String name,
+                                    @RequestParam(required = false) String description) {
         return categoryService.search(name, description);
     }
 }

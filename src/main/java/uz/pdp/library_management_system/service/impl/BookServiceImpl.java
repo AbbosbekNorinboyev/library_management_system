@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.Empty;
+import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.response.BookResponse;
@@ -34,19 +35,28 @@ public class BookServiceImpl implements BookService {
     private final SessionId sessionId;
 
     @Override
-    public Response createBook(BookRequest bookRequest) {
+    public ResponseEntity<?> createBook(BookRequest bookRequest) {
         Category category = categoryRepository.findById(bookRequest.getCategoryId())
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + bookRequest.getCategoryId()));
         Long authUserId = sessionId.getSessionId();
         if (!bookRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.notFound("AuthUser not found");
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .message("AuthUser not found")
+                    .build();
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         Book book = bookMapper.toEntity(bookRequest);
         book.setCategory(category);
         bookRepository.save(book);
         log.info("Book successfully created");
-        return Response.success(bookMapper.toResponse(book));
+        var response = Response.builder()
+                .success(true)
+                .data(bookMapper.toResponse(book))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -76,20 +86,29 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Response updateBook(BookRequest bookRequest, Long bookId) {
+    public ResponseEntity<?> updateBook(BookRequest bookRequest, Long bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
         bookMapper.update(book, bookRequest);
         Long authUserId = sessionId.getSessionId();
         if (!bookRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.notFound("AuthUser not found");
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .message("AuthUser not found")
+                    .build();
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         book.setCreatedBy(bookRequest.getCreatedBy());
         book.setUpdatedAt(bookRequest.getUpdatedAt());
         bookRepository.save(book);
         log.info("Book successfully updated");
-        return Response.success(bookMapper.toResponse(book));
+        var response = Response.builder()
+                .success(true)
+                .data(bookMapper.toResponse(book))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -106,7 +125,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Response search(String title, String author, Integer totalPages, Long availableCopies) {
+    public ResponseEntity<?> search(String title, String author, Integer totalPages, Long availableCopies) {
         Specification<Book> specification = (root, query, criteriaBuilder) -> null;
         if (title != null && !title.isEmpty()) {
             specification = specification.and(BookSpecification.hasTitle(title));
@@ -120,6 +139,11 @@ public class BookServiceImpl implements BookService {
         if (availableCopies != null) {
             specification = specification.and(BookSpecification.hasAvailableCopies(availableCopies));
         }
-        return Response.success(bookRepository.findAll(specification));
+        var response = Response.builder()
+                .success(true)
+                .data(bookRepository.findAll(specification))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 }

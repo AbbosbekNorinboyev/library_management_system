@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.service.BookService;
 
@@ -15,7 +14,7 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/create")
-    public Response createBook(@RequestBody BookRequest bookRequest) {
+    public ResponseEntity<?> createBook(@RequestBody BookRequest bookRequest) {
         return bookService.createBook(bookRequest);
     }
 
@@ -31,8 +30,8 @@ public class BookController {
     }
 
     @PutMapping("/update")
-    public Response updateBook(@RequestBody BookRequest bookRequest,
-                               @RequestParam("bookId") Long bookId) {
+    public ResponseEntity<?> updateBook(@RequestBody BookRequest bookRequest,
+                                        @RequestParam("bookId") Long bookId) {
         return bookService.updateBook(bookRequest, bookId);
     }
 
@@ -42,10 +41,10 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public Response search(@RequestParam(required = false) String title,
-                           @RequestParam(required = false) String author,
-                           @RequestParam(required = false) Integer totalPages,
-                           @RequestParam(required = false) Long availableCopies) {
+    public ResponseEntity<?> search(@RequestParam(required = false) String title,
+                                    @RequestParam(required = false) String author,
+                                    @RequestParam(required = false) Integer totalPages,
+                                    @RequestParam(required = false) Long availableCopies) {
         return bookService.search(title, author, totalPages, availableCopies);
     }
 }

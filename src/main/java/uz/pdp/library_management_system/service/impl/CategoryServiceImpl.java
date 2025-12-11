@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.Empty;
+import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
 import uz.pdp.library_management_system.dto.response.CategoryResponse;
@@ -34,19 +35,28 @@ public class CategoryServiceImpl implements CategoryService {
     private final LibraryRepository libraryRepository;
 
     @Override
-    public Response createCategory(CategoryRequest categoryRequest) {
+    public ResponseEntity<?> createCategory(CategoryRequest categoryRequest) {
         Category category = categoryMapper.toEntity(categoryRequest);
         Long authUserId = sessionId.getSessionId();
         if (!categoryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.notFound("AuthUser not found");
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .message("AuthUser not found")
+                    .build();
+            return ResponseEntity.badRequest().body(errorResponse);
         }
         Library library = libraryRepository.findById(categoryRequest.getLibraryId())
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + categoryRequest.getLibraryId()));
         category.setLibrary(library);
         categoryRepository.save(category);
         log.info("Category successfully created");
-        return Response.success(categoryMapper.toResponse(category));
+        var response = Response.builder()
+                .success(true)
+                .data(categoryMapper.toResponse(category))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -76,32 +86,46 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Response updateCategory(CategoryRequest categoryRequest, Long categoryId) {
+    public ResponseEntity<?> updateCategory(CategoryRequest categoryRequest, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         categoryMapper.update(category, categoryRequest);
         Long authUserId = sessionId.getSessionId();
         if (!categoryRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.notFound("AuthUser not found");
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .message("AuthUser not found")
+                    .build();
+            return ResponseEntity.badRequest().body(errorResponse);
         }
         category.setUpdatedBy(categoryRequest.getUpdatedBy());
         category.setUpdatedBy(authUserId);
         categoryRepository.save(category);
         log.info("Category successfully updated");
-        return Response.success(categoryMapper.toResponse(category));
+        var response = Response.builder()
+                .success(true)
+                .data(categoryMapper.toResponse(category))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
-    public Response getCategoryByLibraryId(Long libraryId) {
+    public ResponseEntity<?> getCategoryByLibraryId(Long libraryId) {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         List<Category> allByLibraryId = categoryRepository.findAllByLibraryId(library.getId());
-        return Response.success(allByLibraryId.stream().map(categoryMapper::toResponse).toList());
+        var response = Response.builder()
+                .success(true)
+                .data(allByLibraryId.stream().map(categoryMapper::toResponse).toList())
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
-    public Response search(String name, String description) {
+    public ResponseEntity<?> search(String name, String description) {
         Specification<Category> specification = (root, query, criteriaBuilder) -> null;
         if (name != null && !name.isEmpty()) {
             specification = specification.and(CategorySpecification.hasName(name));
@@ -110,6 +134,11 @@ public class CategoryServiceImpl implements CategoryService {
             specification = specification.and(CategorySpecification.hasDescription(description));
         }
 
-        return Response.success(categoryRepository.findAll(specification));
+        var response = Response.builder()
+                .success(true)
+                .data(categoryRepository.findAll(specification))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
 import uz.pdp.library_management_system.dto.Empty;
+import uz.pdp.library_management_system.dto.ErrorResponse;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.BorrowingRequest;
 import uz.pdp.library_management_system.dto.response.BorrowingResponse;
@@ -30,11 +31,15 @@ public class BorrowingServiceImpl implements BorrowingService {
     private final BookRepository bookRepository;
 
     @Override
-    public Response createBorrowing(BorrowingRequest borrowingRequest) {
+    public ResponseEntity<?> createBorrowing(BorrowingRequest borrowingRequest) {
         Long authUserId = sessionId.getSessionId();
         if (!borrowingRequest.getCreatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.notFound("AuthUser not found");
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .message("AuthUser not found")
+                    .build();
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         Book book = bookRepository.findById(borrowingRequest.getBookId())
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + borrowingRequest.getBookId()));
@@ -42,7 +47,12 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setBook(book);
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully created");
-        return Response.success(borrowingMapper.toResponse(borrowing));
+        var response = Response.builder()
+                .success(true)
+                .data(borrowingMapper.toResponse(borrowing))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -72,7 +82,7 @@ public class BorrowingServiceImpl implements BorrowingService {
     }
 
     @Override
-    public Response updateBorrowing(BorrowingRequest borrowingRequest, Long borrowingId) {
+    public ResponseEntity<?> updateBorrowing(BorrowingRequest borrowingRequest, Long borrowingId) {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         Book book = bookRepository.findById(borrowingRequest.getBookId())
@@ -82,12 +92,21 @@ public class BorrowingServiceImpl implements BorrowingService {
         Long authUserId = sessionId.getSessionId();
         if (!borrowingRequest.getUpdatedBy().equals(authUserId)) {
             log.error("AuthUser not found");
-            return Response.notFound("AuthUser not found");
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .code(HttpStatus.NOT_FOUND.value())
+                    .message("AuthUser not found")
+                    .build();
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
         borrowing.setUpdatedBy(borrowingRequest.getUpdatedBy());
         borrowing.setUpdatedAt(borrowingRequest.getUpdatedAt());
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully updated");
-        return Response.success(borrowingMapper.toResponse(borrowing));
+        var response = Response.builder()
+                .success(true)
+                .data(borrowingMapper.toResponse(borrowing))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 }
