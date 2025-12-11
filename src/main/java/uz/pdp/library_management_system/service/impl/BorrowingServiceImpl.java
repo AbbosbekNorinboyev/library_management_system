@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
+import uz.pdp.library_management_system.dto.Empty;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.BorrowingRequest;
 import uz.pdp.library_management_system.dto.response.BorrowingResponse;
@@ -40,7 +42,7 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setBook(book);
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully created");
-        return Response.success(borrowingMapper.toResponse(borrowing), "Book successfully created");
+        return Response.success(borrowingMapper.toResponse(borrowing));
     }
 
     @Override
@@ -48,15 +50,20 @@ public class BorrowingServiceImpl implements BorrowingService {
         Borrowing borrowing = borrowingRepository.findById(borrowingId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Borrowing not found: " + borrowingId));
         log.info("Borrowing successfully found");
-        return Response.success(borrowingMapper.toResponse(borrowing), "Borrowing successfully found");
+        return Response.success(borrowingMapper.toResponse(borrowing));
     }
 
     @Override
-    public Response getAllBorrowing(Pageable pageable) {
+    public ResponseEntity<?> getAllBorrowing(Pageable pageable) {
         Page<BorrowingResponse> borrowings = borrowingRepository.findAll(pageable)
                 .map(borrowingMapper::toResponse);
         log.info("Borrowing list successfully found");
-        return Response.success(borrowings, "Borrowing successfully found");
+        Response<Object, Object> response = Response.builder()
+                .success(true)
+                .data(borrowings.getContent())
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -76,6 +83,6 @@ public class BorrowingServiceImpl implements BorrowingService {
         borrowing.setUpdatedAt(borrowingRequest.getUpdatedAt());
         borrowingRepository.save(borrowing);
         log.info("Borrowing successfully updated");
-        return Response.success(borrowingMapper.toResponse(borrowing), "Borrowing successfully updated");
+        return Response.success(borrowingMapper.toResponse(borrowing));
     }
 }

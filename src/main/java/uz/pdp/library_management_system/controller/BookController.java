@@ -2,6 +2,7 @@ package uz.pdp.library_management_system.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.BookRequest;
@@ -24,8 +25,8 @@ public class BookController {
     }
 
     @GetMapping("/getAll")
-    public Response getAllBook(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-                               @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
+    public ResponseEntity<?> getAllBook(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                        @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
         return bookService.getAllBook(PageRequest.of(page, size));
     }
 

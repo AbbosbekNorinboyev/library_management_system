@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
+import uz.pdp.library_management_system.dto.Empty;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.response.BookResponse;
@@ -44,7 +46,7 @@ public class BookServiceImpl implements BookService {
         book.setCategory(category);
         bookRepository.save(book);
         log.info("Book successfully created");
-        return Response.success(bookMapper.toResponse(book), "Book successfully created");
+        return Response.success(bookMapper.toResponse(book));
     }
 
     @Override
@@ -52,15 +54,20 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
         log.info("Book successfully found");
-        return Response.success(bookMapper.toResponse(book), "Book successfully found");
+        return Response.success(bookMapper.toResponse(book));
     }
 
     @Override
-    public Response getAllBook(Pageable pageable) {
+    public ResponseEntity<?> getAllBook(Pageable pageable) {
         Page<BookResponse> books = bookRepository.findAll(pageable)
                 .map(bookMapper::toResponse);
         log.info("Book list successfully found");
-        return Response.success(books, "Books successfully found");
+        Response<Object, Object> response = Response.builder()
+                .success(true)
+                .data(books.getContent())
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -77,7 +84,7 @@ public class BookServiceImpl implements BookService {
         book.setUpdatedAt(bookRequest.getUpdatedAt());
         bookRepository.save(book);
         log.info("Book successfully updated");
-        return Response.success(bookMapper.toResponse(book), "Book successfully updated");
+        return Response.success(bookMapper.toResponse(book));
     }
 
     @Override
@@ -85,8 +92,7 @@ public class BookServiceImpl implements BookService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         List<Book> allByCategoryId = bookRepository.findAllByCategoryId(category.getId());
-        return Response.success(allByCategoryId.stream().map(bookMapper::toResponse).toList(),
-                "Books successfully found by categoryId");
+        return Response.success(allByCategoryId.stream().map(bookMapper::toResponse).toList());
     }
 
     @Override
@@ -104,6 +110,6 @@ public class BookServiceImpl implements BookService {
         if (availableCopies != null) {
             specification = specification.and(BookSpecification.hasAvailableCopies(availableCopies));
         }
-        return Response.success(bookRepository.findAll(specification), "Book Specification");
+        return Response.success(bookRepository.findAll(specification));
     }
 }

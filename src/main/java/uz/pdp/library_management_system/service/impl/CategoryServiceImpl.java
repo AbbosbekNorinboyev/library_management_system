@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
+import uz.pdp.library_management_system.dto.Empty;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
 import uz.pdp.library_management_system.dto.response.CategoryResponse;
@@ -44,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setLibrary(library);
         categoryRepository.save(category);
         log.info("Category successfully created");
-        return Response.success(categoryMapper.toResponse(category), "Category successfully created");
+        return Response.success(categoryMapper.toResponse(category));
     }
 
     @Override
@@ -52,15 +54,20 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
         log.info("Category successfully found");
-        return Response.success(categoryMapper.toResponse(category), "Category successfully found");
+        return Response.success(categoryMapper.toResponse(category));
     }
 
     @Override
-    public Response getAllCategory(Pageable pageable) {
+    public ResponseEntity<?> getAllCategory(Pageable pageable) {
         Page<CategoryResponse> categories = categoryRepository.findAll(pageable)
                 .map(categoryMapper::toResponse);
         log.info("Category list successfully found");
-        return Response.success(categories, "Categories successfully found");
+        Response<Object, Object> response = Response.builder()
+                .success(true)
+                .data(categories.getContent())
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -77,7 +84,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdatedBy(authUserId);
         categoryRepository.save(category);
         log.info("Category successfully updated");
-        return Response.success(categoryMapper.toResponse(category), "Category successfully updated");
+        return Response.success(categoryMapper.toResponse(category));
     }
 
     @Override
@@ -85,8 +92,7 @@ public class CategoryServiceImpl implements CategoryService {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         List<Category> allByLibraryId = categoryRepository.findAllByLibraryId(library.getId());
-        return Response.success(allByLibraryId.stream().map(categoryMapper::toResponse).toList(),
-                "Categories successfully found by libraryId");
+        return Response.success(allByLibraryId.stream().map(categoryMapper::toResponse).toList());
     }
 
     @Override
@@ -99,6 +105,6 @@ public class CategoryServiceImpl implements CategoryService {
             specification = specification.and(CategorySpecification.hasDescription(description));
         }
 
-        return Response.success(categoryRepository.findAll(specification), "Category specification");
+        return Response.success(categoryRepository.findAll(specification));
     }
 }

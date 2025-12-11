@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.library_management_system.config.SessionId;
+import uz.pdp.library_management_system.dto.Empty;
 import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.LibraryRequest;
 import uz.pdp.library_management_system.dto.response.LibraryResponse;
@@ -34,7 +36,7 @@ public class LibraryServiceImpl implements LibraryService {
         Library library = libraryMapper.toEntity(libraryRequest);
         libraryRepository.save(library);
         log.info("Library successfully created");
-        return Response.success(libraryMapper.toResponse(library), "Library successfully created");
+        return Response.success(libraryMapper.toResponse(library));
     }
 
     @Override
@@ -42,15 +44,20 @@ public class LibraryServiceImpl implements LibraryService {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
         log.info("Library successfully found");
-        return Response.success(libraryMapper.toResponse(library), "Library successfully found");
+        return Response.success(libraryMapper.toResponse(library));
     }
 
     @Override
-    public Response getAllLibrary(Pageable pageable) {
+    public ResponseEntity<?> getAllLibrary(Pageable pageable) {
         Page<LibraryResponse> libraries = libraryRepository.findAll(pageable)
                 .map(libraryMapper::toResponse);
         log.info("Library list successfully found");
-        return Response.success(libraries, "Library list successfully found");
+        Response<Object, Object> response = Response.builder()
+                .success(true)
+                .data(libraries.getContent())
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -68,6 +75,6 @@ public class LibraryServiceImpl implements LibraryService {
         library.setUpdatedAt(libraryRequest.getUpdatedAt());
         libraryRepository.save(library);
         log.info("Library successfully updated");
-        return Response.success(libraryMapper.toResponse(library), "Library successfully updated");
+        return Response.success(libraryMapper.toResponse(library));
     }
 }
