@@ -14,10 +14,13 @@ import uz.pdp.library_management_system.dto.Response;
 import uz.pdp.library_management_system.dto.request.LibraryRequest;
 import uz.pdp.library_management_system.dto.response.LibraryResponse;
 import uz.pdp.library_management_system.entity.Library;
+import uz.pdp.library_management_system.enums.Status;
 import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.LibraryMapper;
 import uz.pdp.library_management_system.repository.LibraryRepository;
 import uz.pdp.library_management_system.service.LibraryService;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -97,6 +100,26 @@ public class LibraryServiceImpl implements LibraryService {
         var response = Response.builder()
                 .success(true)
                 .data(libraryMapper.toResponse(library))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteLibrary(Long libraryId) {
+        Library library = libraryRepository.findById(libraryId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId));
+        if (library.getStatus() == Status.DELETED) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Library not found: " + libraryId);
+        }
+        library.setStatus(Status.DELETED);
+        library.setUpdatedBy(sessionId.getSessionId());
+        library.setUpdatedAt(LocalDateTime.now());
+        libraryRepository.save(library);
+        log.info("Library successfully deleted");
+        var response = Response.builder()
+                .success(true)
+                .data(Empty.builder().build())
                 .error(Empty.builder().build())
                 .build();
         return ResponseEntity.ok(response);

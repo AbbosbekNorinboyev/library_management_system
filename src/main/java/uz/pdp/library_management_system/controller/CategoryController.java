@@ -46,4 +46,9 @@ public class CategoryController {
                                     @RequestParam(required = false) String description) {
         return categoryService.search(name, description);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteCategory(@RequestParam("categoryId") Long categoryId) {
+        return categoryService.deleteCategory(categoryId);
+    }
 }

@@ -2,6 +2,7 @@ package uz.pdp.library_management_system.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import uz.pdp.library_management_system.enums.Status;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +22,8 @@ public class Category {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "library_id")
     private Library library;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     private Long createdBy;
     private LocalDateTime createdAt;
     private Long updatedBy;

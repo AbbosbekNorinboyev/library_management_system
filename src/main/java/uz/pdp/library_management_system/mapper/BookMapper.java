@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.response.BookResponse;
 import uz.pdp.library_management_system.entity.Book;
+import uz.pdp.library_management_system.enums.Status;
 
 @Component
 public class BookMapper {
@@ -13,6 +14,7 @@ public class BookMapper {
                 .title(bookRequest.getTitle())
                 .totalPages(bookRequest.getTotalPages())
                 .availableCopies(bookRequest.getAvailableCopies())
+                .status(Status.ACTIVE)
                 .createdBy(bookRequest.getCreatedBy())
                 .createdAt(bookRequest.getCreatedAt())
                 .updatedBy(bookRequest.getUpdatedBy())
@@ -28,6 +30,7 @@ public class BookMapper {
                 .totalPages(book.getTotalPages())
                 .availableCopies(book.getAvailableCopies())
                 .categoryId(book.getCategory().getId())
+                .status(book.getStatus())
                 .createdBy(book.getCreatedBy())
                 .createdAt(book.getCreatedAt())
                 .updatedBy(book.getUpdatedBy())

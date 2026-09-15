@@ -16,4 +16,6 @@ public interface BookService {
     ResponseEntity<?> getBookByCategoryId(Long categoryId);
 
     ResponseEntity<?> search(String title, String author, Integer totalPages, Long availableCopies);
+
+    ResponseEntity<?> deleteBook(Long bookId);
 }

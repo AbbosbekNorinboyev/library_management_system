@@ -12,4 +12,6 @@ public interface LibraryService {
     ResponseEntity<?> getAllLibrary(Pageable pageable);
 
     ResponseEntity<?> updateLibrary(LibraryRequest libraryRequest, Long libraryId);
+
+    ResponseEntity<?> deleteLibrary(Long libraryId);
 }

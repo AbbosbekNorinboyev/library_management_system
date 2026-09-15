@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.pdp.library_management_system.enums.Status;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ public class LibraryResponse {
     private String address;
     private String phone;
     private String email;
+    private Status status;
     private Long createdBy;
     private LocalDateTime createdAt;
     private Long updatedBy;

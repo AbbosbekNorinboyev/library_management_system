@@ -16,6 +16,7 @@ import uz.pdp.library_management_system.dto.request.BookRequest;
 import uz.pdp.library_management_system.dto.response.BookResponse;
 import uz.pdp.library_management_system.entity.Book;
 import uz.pdp.library_management_system.entity.Category;
+import uz.pdp.library_management_system.enums.Status;
 import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.BookMapper;
 import uz.pdp.library_management_system.repository.BookRepository;
@@ -23,6 +24,7 @@ import uz.pdp.library_management_system.repository.CategoryRepository;
 import uz.pdp.library_management_system.service.BookService;
 import uz.pdp.library_management_system.specification.BookSpecification;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -142,6 +144,26 @@ public class BookServiceImpl implements BookService {
         var response = Response.builder()
                 .success(true)
                 .data(bookRepository.findAll(specification))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteBook(Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId));
+        if (book.getStatus() == Status.DELETED) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Book not found: " + bookId);
+        }
+        book.setStatus(Status.DELETED);
+        book.setUpdatedBy(sessionId.getSessionId());
+        book.setUpdatedAt(LocalDateTime.now());
+        bookRepository.save(book);
+        log.info("Book successfully deleted");
+        var response = Response.builder()
+                .success(true)
+                .data(Empty.builder().build())
                 .error(Empty.builder().build())
                 .build();
         return ResponseEntity.ok(response);

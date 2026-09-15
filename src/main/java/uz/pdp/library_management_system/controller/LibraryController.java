@@ -34,4 +34,9 @@ public class LibraryController {
                                            @RequestParam("libraryId") Long libraryId) {
         return libraryService.updateLibrary(libraryRequest, libraryId);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteLibrary(@RequestParam("libraryId") Long libraryId) {
+        return libraryService.deleteLibrary(libraryId);
+    }
 }

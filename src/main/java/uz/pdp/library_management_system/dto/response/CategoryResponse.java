@@ -1,6 +1,7 @@
 package uz.pdp.library_management_system.dto.response;
 
 import lombok.*;
+import uz.pdp.library_management_system.enums.Status;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ public class CategoryResponse {
     private String name;
     private String description;
     private Long libraryId;
+    private Status status;
     private Long createdBy;
     private LocalDateTime createdAt;
     private Long updatedBy;

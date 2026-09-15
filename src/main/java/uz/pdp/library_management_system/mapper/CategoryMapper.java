@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import uz.pdp.library_management_system.dto.request.CategoryRequest;
 import uz.pdp.library_management_system.dto.response.CategoryResponse;
 import uz.pdp.library_management_system.entity.Category;
+import uz.pdp.library_management_system.enums.Status;
 
 @Component
 public class CategoryMapper {
@@ -12,6 +13,7 @@ public class CategoryMapper {
         return Category.builder()
                 .name(categoryRequest.getName())
                 .description(categoryRequest.getDescription())
+                .status(Status.ACTIVE)
                 .createdBy(categoryRequest.getCreatedBy())
                 .createdAt(categoryRequest.getCreatedAt())
                 .updatedBy(categoryRequest.getUpdatedBy())
@@ -25,6 +27,7 @@ public class CategoryMapper {
                 .name(category.getName())
                 .description(category.getDescription())
                 .libraryId(category.getLibrary().getId())
+                .status(category.getStatus())
                 .createdBy(category.getCreatedBy())
                 .createdAt(category.getCreatedAt())
                 .updatedBy(category.getUpdatedBy())

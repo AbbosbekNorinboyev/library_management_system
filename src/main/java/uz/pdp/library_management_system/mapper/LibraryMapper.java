@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import uz.pdp.library_management_system.dto.request.LibraryRequest;
 import uz.pdp.library_management_system.dto.response.LibraryResponse;
 import uz.pdp.library_management_system.entity.Library;
+import uz.pdp.library_management_system.enums.Status;
 
 @Component
 public class LibraryMapper {
@@ -13,6 +14,7 @@ public class LibraryMapper {
                 .address(libraryRequest.getAddress())
                 .phone(libraryRequest.getPhone())
                 .email(libraryRequest.getEmail())
+                .status(Status.ACTIVE)
                 .createdBy(libraryRequest.getCreatedBy())
                 .createdAt(libraryRequest.getCreatedAt())
                 .updatedBy(libraryRequest.getUpdatedBy())
@@ -27,6 +29,7 @@ public class LibraryMapper {
                 .address(library.getAddress())
                 .phone(library.getPhone())
                 .email(library.getEmail())
+                .status(library.getStatus())
                 .createdBy(library.getCreatedBy())
                 .createdAt(library.getCreatedAt())
                 .updatedBy(library.getUpdatedBy())

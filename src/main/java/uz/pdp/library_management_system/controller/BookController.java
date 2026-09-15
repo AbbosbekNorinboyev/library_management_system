@@ -24,14 +24,12 @@ public class BookController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<?> getAllBook(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-                                        @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
+    public ResponseEntity<?> getAllBook(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, @RequestParam(value = "size", required = false, defaultValue = "20") Integer size) {
         return bookService.getAllBook(PageRequest.of(page, size));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateBook(@RequestBody BookRequest bookRequest,
-                                        @RequestParam("bookId") Long bookId) {
+    public ResponseEntity<?> updateBook(@RequestBody BookRequest bookRequest, @RequestParam("bookId") Long bookId) {
         return bookService.updateBook(bookRequest, bookId);
     }
 
@@ -41,10 +39,12 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam(required = false) String title,
-                                    @RequestParam(required = false) String author,
-                                    @RequestParam(required = false) Integer totalPages,
-                                    @RequestParam(required = false) Long availableCopies) {
+    public ResponseEntity<?> search(@RequestParam(required = false) String title, @RequestParam(required = false) String author, @RequestParam(required = false) Integer totalPages, @RequestParam(required = false) Long availableCopies) {
         return bookService.search(title, author, totalPages, availableCopies);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteBook(@RequestParam("bookId") Long bookId) {
+        return bookService.deleteBook(bookId);
     }
 }

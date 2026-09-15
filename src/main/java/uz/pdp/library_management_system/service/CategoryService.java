@@ -16,4 +16,6 @@ public interface CategoryService {
     ResponseEntity<?> getCategoryByLibraryId(Long libraryId);
 
     ResponseEntity<?> search(String name, String description);
+
+    ResponseEntity<?> deleteCategory(Long categoryId);
 }

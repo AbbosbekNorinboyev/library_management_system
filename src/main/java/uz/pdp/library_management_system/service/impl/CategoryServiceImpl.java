@@ -16,6 +16,7 @@ import uz.pdp.library_management_system.dto.request.CategoryRequest;
 import uz.pdp.library_management_system.dto.response.CategoryResponse;
 import uz.pdp.library_management_system.entity.Category;
 import uz.pdp.library_management_system.entity.Library;
+import uz.pdp.library_management_system.enums.Status;
 import uz.pdp.library_management_system.exception.CustomException;
 import uz.pdp.library_management_system.mapper.CategoryMapper;
 import uz.pdp.library_management_system.repository.CategoryRepository;
@@ -23,6 +24,7 @@ import uz.pdp.library_management_system.repository.LibraryRepository;
 import uz.pdp.library_management_system.service.CategoryService;
 import uz.pdp.library_management_system.specification.CategorySpecification;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -137,6 +139,26 @@ public class CategoryServiceImpl implements CategoryService {
         var response = Response.builder()
                 .success(true)
                 .data(categoryRepository.findAll(specification))
+                .error(Empty.builder().build())
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId));
+        if (category.getStatus() == Status.DELETED) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Category not found: " + categoryId);
+        }
+        category.setStatus(Status.DELETED);
+        category.setUpdatedBy(sessionId.getSessionId());
+        category.setUpdatedAt(LocalDateTime.now());
+        categoryRepository.save(category);
+        log.info("Category successfully deleted");
+        var response = Response.builder()
+                .success(true)
+                .data(Empty.builder().build())
                 .error(Empty.builder().build())
                 .build();
         return ResponseEntity.ok(response);
