@@ -102,3 +102,8 @@
 2026-09-15 18:12:11 [http-nio-3344-exec-2] INFO  u.p.l.s.impl.CategoryServiceImpl - Category list successfully found
 2026-09-15 18:12:45 [http-nio-3344-exec-3] INFO  u.p.l.s.impl.CategoryServiceImpl - Category successfully created
 2026-09-15 18:12:51 [http-nio-3344-exec-4] INFO  u.p.l.s.impl.CategoryServiceImpl - Category list successfully found
+2026-09-15 18:17:55 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-09-15 18:17:55 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-09-15 18:17:55 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-15 18:17:55 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-15 18:17:55 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
